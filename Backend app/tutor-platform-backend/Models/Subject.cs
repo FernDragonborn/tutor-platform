@@ -22,5 +22,5 @@ public class Subject
     public string TeachingMethods { get; set; }
 
     [Required]
-    public IList<GradeLevelObj> GradeLevels { get; set; }
+    public virtual IList<GradeLevelObj> GradeLevels { get; set; }
 }

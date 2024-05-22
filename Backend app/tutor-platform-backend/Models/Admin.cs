@@ -6,6 +6,10 @@ namespace TutorPlatformBackend.Models
 {
     public class Admin : User
     {
+        public Admin() { }
+
+        public Admin(string passwordSalt) : base(passwordSalt) { }
+
         [Required]
         [MaxLength(50)]
         [DefaultValue(IdentityData.AdminClaimName)]

@@ -16,7 +16,11 @@ public class TutorPlatformDbContext : Microsoft.EntityFrameworkCore.DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer();
+        optionsBuilder.UseSqlServer((@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=TutorPlatform;Persist Security Info=True;User ID=app_connection_login;Password=123456"), builder =>
+        {
+            builder.EnableRetryOnFailure(2, TimeSpan.FromSeconds(10), null);
+        });
+        base.OnConfiguring(optionsBuilder);
     }
 
     protected override void ConfigureConventions(ModelConfigurationBuilder builder)

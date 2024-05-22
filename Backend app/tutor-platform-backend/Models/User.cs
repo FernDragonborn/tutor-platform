@@ -5,6 +5,14 @@ namespace TutorPlatformBackend.Models
 {
     public abstract class User : IUser
     {
+        public User() { }
+
+        public User(string passwordSalt)
+        {
+            Id = Guid.NewGuid();
+            PasswordSalt = passwordSalt;
+        }
+
         [Key]
         public Guid Id { get; set; }
 

@@ -6,6 +6,10 @@ namespace TutorPlatformBackend.Models
 {
     public class Student : User
     {
+        public Student() { }
+
+        public Student(string passwordSalt) : base(passwordSalt) { }
+
         [Required]
         [MaxLength(50)]
         [DefaultValue(IdentityData.StudentClaimName)]
@@ -15,6 +19,6 @@ namespace TutorPlatformBackend.Models
         [Phone]
         public string PhoneNumber { get; set; }
 
-        public IList<StudentLesson>? Lessons { get; set; }
+        public virtual IList<StudentLesson>? Lessons { get; set; }
     }
 }

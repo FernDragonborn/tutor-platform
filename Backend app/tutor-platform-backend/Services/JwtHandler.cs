@@ -4,10 +4,17 @@ using System.Security.Claims;
 using System.Text;
 using TutorPlatformBackend.Models;
 
-namespace TutorPlatformBackend;
+namespace TutorPlatformBackend.Services;
 
 public static class JwtHandler
 {
+    private static string? _keyString;
+
+    public static void Initialize(IConfiguration config)
+    {
+        _keyString = config["JwtSettings:Key"].Trim();
+    }
+
     public static string? CreateToken(User user)
     {
         List<Claim> claims = new()
@@ -19,7 +26,7 @@ public static class JwtHandler
 
         //TODO this needed to be provided by some key vault, but I didn't use these services, so it need enhentment. I also didn't use standalrt local vault, because it only can be acessed through builder for app
         //TODO also need to create second token for renewing first
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("fNBXCRyN0a1CbXK6IVQwjnwUq6P3dF0DK2hbmvm"));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_keyString));
 
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 

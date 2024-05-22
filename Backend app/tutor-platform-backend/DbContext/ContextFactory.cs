@@ -4,11 +4,18 @@ namespace TutorPlatformBackend.DbContext;
 
 public static class ContextFactory
 {
-    //TODO remove connection string to other place
-    private static readonly DbContextOptions Options = new DbContextOptionsBuilder<TutorPlatformDbContext>()
-        .UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=TutorPlatform;Persist Security Info=True;User ID=app_connection_login;Password=123456")
-        .UseLazyLoadingProxies()
-        .Options;
+    private static IConfiguration _config = new ConfigurationManager();
+    private static DbContextOptions Options;
+
+    public static void Initialize(IConfiguration config)
+    {
+        _config = config;
+        Options = new DbContextOptionsBuilder<TutorPlatformDbContext>()
+            .UseLazyLoadingProxies()
+            .UseSqlServer(_config.GetConnectionString("Default"))
+            .Options;
+    }
+
     public static TutorPlatformDbContext CreateNew()
     {
         return new TutorPlatformDbContext(Options);

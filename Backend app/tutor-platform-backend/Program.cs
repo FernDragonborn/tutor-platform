@@ -11,6 +11,7 @@ using TutorPlatformBackend.DbContext;
 using TutorPlatformBackend.Identity;
 using TutorPlatformBackend.ImageConvertors;
 using TutorPlatformBackend.Interfaces;
+using TutorPlatformBackend.Services;
 using TutorPlatformBackend.VirusScanners;
 
 namespace TutorPlatformBackend;
@@ -22,10 +23,12 @@ public class Program
         Console.OutputEncoding = Encoding.GetEncoding(1251);
         Console.InputEncoding = Encoding.GetEncoding(1251);
 
-        DotNetEnv.Env.Load(".env");
-
         var builder = WebApplication.CreateBuilder(args);
 
+        ContextFactory.Initialize(builder.Services.BuildServiceProvider().GetRequiredService<IConfiguration>());
+        JwtHandler.Initialize(
+            builder.Services.BuildServiceProvider().GetRequiredService<IConfiguration>()
+        );
         //Uncomment for api models problems
         //https://mirsaeedi.medium.com/asp-net-core-customize-validation-error-message-9022c12d3d7d
         builder.Services.Configure<ApiBehaviorOptions>(apiBehaviorOptions =>
@@ -36,7 +39,7 @@ public class Program
         // Add services to the container.
         builder.Services.AddControllers();
         builder.Services.AddDbContext<TutorPlatformDbContext>(options =>
-            options.UseSqlServer(builder.Configuration["DbConnectionString"]));
+            options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 
         builder.Services.AddScoped<IVirusScanner, WindowsEmbededVirusScanner>();
         builder.Services.AddScoped<IImageConverter, SimplmageConverter>();

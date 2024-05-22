@@ -7,10 +7,15 @@ namespace TutorPlatformBackend.Models;
 
 public class Tutor : User
 {
+    public Tutor() { }
+
+    public Tutor(string passwordSalt) : base(passwordSalt) { }
+
+
     [Required]
     [MaxLength(50)]
     [DefaultValue(IdentityData.TutorClaimName)]
-    public override string Role { get; set; }
+    public override string Role { get; set; } = IdentityData.TutorClaimName;
 
     [Required]
     [EmailAddress]
@@ -19,23 +24,19 @@ public class Tutor : User
 
     [Required]
     [Phone]
-    [MaxLength(13)]
-    public string PhoneNumber { get; set; }
+    public string? PhoneNumber { get; set; }
 
     [Phone]
-    [MaxLength(50)]
     public string? Viber { get; set; }
 
-    [Phone]
     [MaxLength(50)]
     public string? Telegram { get; set; }
 
+    [DefaultValue(false)]
+    public bool? IsVerified { get; set; }
 
     [DefaultValue(false)]
-    public bool IsVerified { get; set; }
-
-    [DefaultValue(false)]
-    public bool IsProfileActive { get; set; }
+    public bool? IsProfileActive { get; set; }
 
     public byte[]? ProfilePic { get; set; }
 
@@ -43,34 +44,35 @@ public class Tutor : User
     public Experience Experience { get; set; }
 
     [Required]
-    public IList<Subject> Subjects { get; set; }
+    public virtual IList<Subject> Subjects { get; set; }
 
     [Required]
-    public IList<Education> Educations { get; set; }
+    public virtual IList<Education> Educations { get; set; }
 
-    public IList<EducationDocument>? EducationDocuments { get; set; }
-
+    public virtual IList<EducationDocument>? EducationDocuments { get; set; }
 
     [MaxLength(100)]
-    public string City { get; set; }
+    public string? City { get; set; }
 
     [Required]
     [DefaultValue(false)]
-    public bool CanHost { get; set; }
+    public bool? CanHost { get; set; }
 
     [Required]
     [DefaultValue(false)]
-    public bool CanCome { get; set; }
+    public bool? CanCome { get; set; }
 
     [Required]
     [DefaultValue(false)]
-    public bool CanTeachOnline { get; set; }
+    public bool? CanTeachOnline { get; set; }
 
+    [Required]
     [MaxLength(350)]
-    public string ShortDescription { get; set; }
+    public string? ShortDescription { get; set; }
 
-    [MaxLength(4000)]
-    public string DetailedDescription { get; set; }
+    [Required]
+    [MaxLength(1000)]
+    public string? DetailedDescription { get; set; }
 
     [Required]
     public AgeGroup AgeGroup { get; set; }
@@ -79,10 +81,10 @@ public class Tutor : User
     public Gender Gender { get; set; }
 
     [Url]
-    public string YoutubeVideoLink { get; set; }
+    public string? YoutubeVideoLink { get; set; }
 
     [Required]
-    public EFBoolCollection Schedule { get; set; }
+    public virtual EFBoolCollection Schedule { get; set; }
 
-    public IList<Review> Reviews { get; set; }
+    public virtual IList<Review>? Reviews { get; set; }
 }

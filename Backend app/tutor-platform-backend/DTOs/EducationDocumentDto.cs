@@ -6,14 +6,14 @@ namespace TutorPlatformBackend.DTOs
     {
         public string? Id { get; set; }
 
-        public string? EducationId { get; set; }
+        public string? TutorId { get; set; }
 
         public EducationDocumentDto() { }
 
         public EducationDocumentDto(EducationDocument document)
         {
             Id = document.Id.ToString();
-            EducationId = document.EducationId.ToString();
+            TutorId = document.TutorId.ToString();
             ImageData = document.ImageData.ToString();
             ImageType = document.ImageType;
         }

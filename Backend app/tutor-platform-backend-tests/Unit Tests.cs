@@ -2,19 +2,16 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
 using System.Data.Common;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net;
-using System.Text;
 using Testcontainers.MsSql;
 using TutorPlatformBackend;
 using TutorPlatformBackend.DbContext;
-using TutorPlatformBackend.DTOs;
+using TutorPlatformBackend.ImageConvertors;
 using TutorPlatformBackend.Models;
-using TutorPlatformBackend.PhotoConvertors;
+using TutorPlatformBackend.Services;
 using TutorPlatformBackend.VirusScanners;
 
 namespace TutorPlatformBackend_tests;
@@ -83,40 +80,7 @@ public class IntegrationTests_AlbumController : IClassFixture<WebApplicationFact
 
 
 
-    [Fact]
-    public async Task CreateAlbum_ReturnsOkResult()
-    {
-        // Arrange
-        var client = _factory.CreateClient();
-        var albumDto = new AlbumDto { UserId = "user-id", Title = "Test Album" };
-        var content = new StringContent(JsonConvert.SerializeObject(albumDto), Encoding.UTF8, "application/json");
 
-        // Act
-        var response = await client.PostAsync("/api/album/create", content);
-
-        // Assert
-        response.EnsureSuccessStatusCode();
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
-        // You can add additional assertions based on your requirements
-    }
-
-    [Fact]
-    public async Task CreateAlbum_WithInvalidInput_ReturnsBadRequest()
-    {
-        // Arrange
-        var client = _factory.CreateClient();
-        var invalidAlbumDto = new AlbumDto(); // Invalid input
-        var content = new StringContent(JsonConvert.SerializeObject(invalidAlbumDto), Encoding.UTF8, "application/json");
-
-        // Act
-        var response = await client.PostAsync("/api/album/create", content);
-
-        // Assert
-        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-
-        // You can add additional assertions based on your requirements
-    }
 
     public void Dispose()
     {
@@ -132,15 +96,15 @@ public class UitTests
     public void CreateToken_ReturnsValidToken()
     {
         // Arrange
-        var user = new User
+        var admin = new Admin
         {
-            UserId = Guid.Parse("00000000-0000-0000-0000-000000000000"),
+            Id = Guid.Parse("00000000-0000-0000-0000-000000000000"),
             Login = "testuser",
-            Role = "user"
+            Role = "admin"
         };
 
         // Act
-        var token = JwtHandler.CreateToken(user);
+        var token = JwtHandler.CreateToken(admin);
 
         // Assert
         Assert.NotNull(token);
@@ -151,7 +115,7 @@ public class UitTests
         // Check claims
         Assert.Contains(decodedToken.Claims, c => c.Type == "id" && c.Value == "00000000-0000-0000-0000-000000000000");
         Assert.Contains(decodedToken.Claims, c => c.Type == "login" && c.Value == "testuser");
-        Assert.Contains(decodedToken.Claims, c => c.Type == "role" && c.Value == "user");
+        Assert.Contains(decodedToken.Claims, c => c.Type == "role" && c.Value == "admin");
 
         // Check other token properties
         Assert.Equal("https://localhost:7245", decodedToken.Issuer);

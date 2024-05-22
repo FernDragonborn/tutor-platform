@@ -11,7 +11,7 @@ namespace TutorPlatformBackend.Models
         public Guid TutorId { get; set; }
 
         [ForeignKey("TutorId")]
-        public Tutor Tutor { get; set; }
+        public virtual Tutor Tutor { get; set; }
 
         [Required]
         [MaxLength(50)]

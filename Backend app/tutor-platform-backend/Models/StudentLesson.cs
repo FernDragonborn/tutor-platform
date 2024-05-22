@@ -21,7 +21,10 @@ namespace TutorPlatformBackend.Models
         [Required]
         public DateTime LessonTime { get; set; }
 
+        public Guid GradeLevelId { get; set; }
+
         [Required]
-        public GradeLevelObj GradeLevel { get; set; }
+        [ForeignKey("GradeLevelId")]
+        public virtual GradeLevelObj GradeLevel { get; set; }
     }
 }

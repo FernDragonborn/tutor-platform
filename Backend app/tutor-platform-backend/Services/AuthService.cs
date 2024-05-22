@@ -1,5 +1,6 @@
 ﻿using TutorPlatformBackend.DbContext;
 using TutorPlatformBackend.DTOs;
+using TutorPlatformBackend.Enums;
 using TutorPlatformBackend.Models;
 
 namespace TutorPlatformBackend.Services;
@@ -76,14 +77,14 @@ public static class AuthService
             }
         }
 
-        Student student = new()
+        Student student = new(passwordSalt: BCrypt.Net.BCrypt.GenerateSalt())
         {
-            PasswordSalt = BCrypt.Net.BCrypt.GenerateSalt()
+            PhoneNumber = studentDto.PhoneNumber,
+            Login = studentDto.Login,
+            LastName = studentDto.LastName,
+            FirstName = studentDto.FirstName,
         };
         student.PasswordHash = BCrypt.Net.BCrypt.HashPassword(studentDto.Password + student.PasswordSalt, workFactor: 13);
-
-        student.Login = studentDto.Login;
-        student.Role = studentDto.Role;
 
         try
         {
@@ -112,10 +113,26 @@ public static class AuthService
                 return new Result<TutorDto?>(false, null, "User with this login already exists");
             }
         }
+        if (tutorDto.Experience is null
+            || tutorDto.Gender is null
+            || tutorDto.AgeGroup is null) return new Result<TutorDto?>(false, null, "Tutor experience was null");
 
-        Tutor tutor = new()
+        Tutor tutor = new(passwordSalt: BCrypt.Net.BCrypt.GenerateSalt())
         {
-            PasswordSalt = BCrypt.Net.BCrypt.GenerateSalt()
+            Experience = (Experience)tutorDto.Experience,
+            Email = tutorDto.Email,
+            PhoneNumber = tutorDto.PhoneNumber,
+            Viber = tutorDto.Viber,
+            Telegram = tutorDto.Telegram,
+            Login = tutorDto.Login,
+            LastName = tutorDto.LastName,
+            FirstName = tutorDto.FirstName,
+            ShortDescription = tutorDto.ShortDescription,
+            DetailedDescription = tutorDto.DetailedDescription,
+            AgeGroup = (AgeGroup)tutorDto.AgeGroup,
+            Gender = (Gender)tutorDto.Gender,
+            Schedule = new EFBoolCollection()
+
         };
         tutor.PasswordHash = BCrypt.Net.BCrypt.HashPassword(tutorDto.Password + tutor.PasswordSalt, workFactor: 13);
 
@@ -140,24 +157,26 @@ public static class AuthService
         return new Result<TutorDto?>(true, tutorDto, "");
     }
 
-    public static Result<AdminDto?> Register(AdminDto AdminDto)
+    public static Result<AdminDto?> Register(AdminDto adminDto)
     {
         lock (_context)
         {
-            if (_context.Admins.FirstOrDefault(x => x.Login == AdminDto.Login) != default)
+            if (_context.Admins.FirstOrDefault(x => x.Login == adminDto.Login) != default)
             {
                 return new Result<AdminDto?>(false, null, "User with this login already exists");
             }
         }
 
-        Admin admin = new()
+        Admin admin = new(passwordSalt: BCrypt.Net.BCrypt.GenerateSalt())
         {
-            PasswordSalt = BCrypt.Net.BCrypt.GenerateSalt()
+            Login = adminDto.Login,
+            LastName = adminDto.LastName,
+            FirstName = adminDto.FirstName,
         };
-        admin.PasswordHash = BCrypt.Net.BCrypt.HashPassword(AdminDto.Password + admin.PasswordSalt, workFactor: 13);
+        admin.PasswordHash = BCrypt.Net.BCrypt.HashPassword(adminDto.Password + admin.PasswordSalt, workFactor: 13);
 
-        admin.Login = AdminDto.Login;
-        admin.Role = AdminDto.Role;
+        admin.Login = adminDto.Login;
+        admin.Role = adminDto.Role;
 
         try
         {
@@ -170,10 +189,10 @@ public static class AuthService
         catch (Exception ex) { return new Result<AdminDto?>(false, null, ex.Message); }
 
         string token = JwtHandler.CreateToken(admin);
-        AdminDto = new AdminDto(admin)
+        adminDto = new AdminDto(admin)
         {
             JwtToken = token
         };
-        return new Result<AdminDto?>(true, AdminDto, "");
+        return new Result<AdminDto?>(true, adminDto, "");
     }
 }
