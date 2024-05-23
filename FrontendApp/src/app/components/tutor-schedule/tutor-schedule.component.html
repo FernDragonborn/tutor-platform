@@ -1,0 +1,13 @@
+<table>
+    <tr>
+        <th>Час\День</th>
+        <th *ngFor="let day of days">{{ day }}</th>
+    </tr>
+    <tr *ngFor="let timeSlot of timeSlots">
+        <td>{{ timeSlot }}</td>
+        <td *ngFor="let day of days" (click)="toggleAvailability(timeSlot, day)"
+            [ngClass]="{'available': isAvailable(timeSlot, day), 'unavailable': !isAvailable(timeSlot, day)}">
+            {{ isAvailable(timeSlot, day) ? 'Доступно' : 'Недоступно' }}
+        </td>
+    </tr>
+</table>

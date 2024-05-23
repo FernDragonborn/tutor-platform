@@ -238,3 +238,134 @@ public class UitTests
         Assert.False(result);
     }
 }
+
+public class ConverterTests
+{
+    //[Fact]
+    //public void ConvertBoolArrToTable_ConvertsCorrectly()
+    //{
+    //    // Arrange
+    //    bool[] input = ArrayAndTableGenerator.GenerateRandomArray(189);
+    //    bool[,] expectedOutput = ArrayAndTableGenerator.GenerateTable(input, 7, 27);
+
+    //    // Act
+    //    bool[,] result = ScheduleService.ConvertBoolArrToTable(input);
+
+    //    // Assert
+    //    Assert.Equal(expectedOutput, result);
+    //}
+
+    [Fact]
+    public void ConvertBoolTableToArr_ConvertsCorrectly()
+    {
+        // Arrange
+        bool[] expectedOutput = ArrayAndTableGenerator.GenerateRandomArray(189);
+        bool[,] input = ArrayAndTableGenerator.GenerateTable(expectedOutput, 7, 27);
+
+        // Act
+        bool[] result = ScheduleService.ConvertBoolTableToArr(input);
+
+        // Assert
+        Assert.Equal(expectedOutput, result);
+    }
+
+
+    [Fact]
+    public void ConvertBoolArrToTable_InvalidLength_ShouldThrowArgumentException()
+    {
+        // Arrange
+        bool[] arr = new bool[] { true, false, true };
+
+        // Act & Assert
+        Assert.Throws<ArgumentException>(() => ScheduleService.ConvertBoolArrToTable(arr));
+    }
+
+    [Fact]
+    public void ConvertBoolArrToTable_EmptyArray_ShouldThrowArgumentException()
+    {
+        // Arrange
+        bool[] input = new bool[0];
+
+        // Act & Assert
+        Assert.Throws<ArgumentException>(() => ScheduleService.ConvertBoolArrToTable(input));
+    }
+
+    public static bool[] ConvertBoolTableToArr(bool[][] table)
+    {
+        int totalElements = 0;
+        foreach (var row in table)
+        {
+            totalElements += row.Length;
+        }
+
+        bool[] result = new bool[totalElements];
+        int index = 0;
+        foreach (var row in table)
+        {
+            foreach (var element in row)
+            {
+                result[index++] = element;
+            }
+        }
+
+        return result;
+    }
+
+    public static bool[][] ConvertBoolArrToTable(bool[] arr)
+    {
+        const int rows = 7;
+        const int cols = 27;
+
+        if (arr.Length != rows * cols)
+        {
+            throw new ArgumentException("Довжина масиву повинна бути 7 * 27 = 189.");
+        }
+
+        bool[][] table = new bool[rows][];
+        for (int i = 0; i < rows; i++)
+        {
+            table[i] = new bool[cols];
+        }
+
+        for (int i = 0; i < arr.Length; i++)
+        {
+            int row = i / cols;
+            int col = i % cols;
+            table[row][col] = arr[i];
+        }
+
+        return table;
+    }
+}
+
+public class ArrayAndTableGenerator
+{
+    public static bool[] GenerateRandomArray(int length)
+    {
+        bool[] array = new bool[length];
+        Random random = new Random();
+        for (int i = 0; i < length; i++)
+        {
+            array[i] = random.Next(2) == 1;
+        }
+        return array;
+    }
+
+    public static bool[,] GenerateTable(bool[] array, int rows, int cols)
+    {
+        if (array.Length != rows * cols)
+        {
+            throw new ArgumentException("Розмір масиву не відповідає розміру таблиці.");
+        }
+
+        bool[,] table = new bool[rows, cols];
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                table[i, j] = array[rows * i + j];
+            }
+        }
+        return table;
+    }
+}

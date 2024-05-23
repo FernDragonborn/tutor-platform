@@ -47,7 +47,7 @@ public class AuthController : Controller
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [Authorize(Policy = Identity.IdentityData.AdminPolicyName)]
-    [HttpPost("registerAdmon")]
+    [HttpPost("registerAdmin")]
     public async Task<IActionResult> Register(AdminDto adminDto)
     {
         var result = AuthService.Register(adminDto);

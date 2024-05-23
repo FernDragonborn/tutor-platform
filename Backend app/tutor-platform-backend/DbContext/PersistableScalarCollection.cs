@@ -7,21 +7,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 /// <typeparam name="T">Type of the single collection entry that should be persisted.</typeparam>
 
 [ComplexType]
-public class EFGuidCollection : EFPrimitiveCollection<Guid>
-{
-    public override Guid ConvertFromString(string value) => Guid.Parse(value);
-    public override string ConvertToString(Guid value) => value.ToString();
-}
-
-[ComplexType]
-public class EFBoolMatrix : EFPrimitiveCollection<bool>
-{
-    public override bool ConvertFromString(string value) => bool.Parse(value);
-    public override string ConvertToString(bool value) => value.ToString();
-}
-
-
-[ComplexType]
 public class EFBoolCollection : EFPrimitiveCollection<bool>
 {
     public override bool ConvertFromString(string value) => bool.Parse(value);

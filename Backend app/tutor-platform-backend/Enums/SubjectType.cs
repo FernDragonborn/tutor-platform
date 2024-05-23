@@ -17,6 +17,6 @@
         German,
         French,
         Polish,
-        Spanish
+        Spanish,
     }
 }
