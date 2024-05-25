@@ -3,7 +3,7 @@ using TutorPlatformBackend.Models;
 
 namespace TutorPlatformBackend.DTOs
 {
-    public class SubjectDTO
+    public class SubjectDto
     {
         public string? Id { get; set; }
         public string TutorId { get; set; }
@@ -12,9 +12,9 @@ namespace TutorPlatformBackend.DTOs
         public string? TeachingMethods { get; set; }
 
 
-        public SubjectDTO() { }
+        public SubjectDto() { }
 
-        public SubjectDTO(Subject subject)
+        public SubjectDto(Subject subject)
         {
             TutorId = subject.TutorId.ToString();
             Type = subject.Type;

@@ -338,7 +338,7 @@ namespace TutorPlatformBackend.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("DetailedDescription")
+                    b.Property<string>("LongDescription")
                         .IsRequired()
                         .HasMaxLength(4000)
                         .HasColumnType("nvarchar(4000)");

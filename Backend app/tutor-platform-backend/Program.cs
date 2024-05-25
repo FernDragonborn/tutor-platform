@@ -1,116 +1,59 @@
 using LittlePictureNetworkBackend.Interfaces;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.Filters;
-using System.Reflection;
-using System.Text;
+using System.IO.Compression;
 using TutorPlatformBackend.DbContext;
-using TutorPlatformBackend.Identity;
 using TutorPlatformBackend.ImageConvertors;
 using TutorPlatformBackend.Interfaces;
 using TutorPlatformBackend.Services;
 using TutorPlatformBackend.VirusScanners;
+using static TutorPlatformBackend.Configure;
 
 namespace TutorPlatformBackend;
 public class Program
 {
     public static void Main(string[] args)
     {
-        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-        Console.OutputEncoding = Encoding.GetEncoding(1251);
-        Console.InputEncoding = Encoding.GetEncoding(1251);
+        AddUkrainianLanguageSupport();
 
         var builder = WebApplication.CreateBuilder(args);
 
-        ContextFactory.Initialize(builder.Services.BuildServiceProvider().GetRequiredService<IConfiguration>());
-        JwtHandler.Initialize(
-            builder.Services.BuildServiceProvider().GetRequiredService<IConfiguration>()
-        );
-        //Uncomment for api models problems
-        //https://mirsaeedi.medium.com/asp-net-core-customize-validation-error-message-9022c12d3d7d
-        builder.Services.Configure<ApiBehaviorOptions>(apiBehaviorOptions =>
-        {
-            apiBehaviorOptions.SuppressModelStateInvalidFilter = true;
-        });
-
-        // Add services to the container.
-        builder.Services.AddControllers();
-        builder.Services.AddDbContext<TutorPlatformDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+        var config = builder.Services.BuildServiceProvider().GetRequiredService<IConfiguration>();
+        ContextFactory.Initialize(config);
+        JwtHandler.Initialize(config);
 
         builder.Services.AddScoped<IVirusScanner, WindowsEmbededVirusScanner>();
         builder.Services.AddScoped<IImageConverter, SimplmageConverter>();
 
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen(options =>
-        {
-            options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme()
-            {
-                In = ParameterLocation.Header,
-                Name = "Authorization",
-                Type = SecuritySchemeType.ApiKey
-            });
-            options.OperationFilter<SecurityRequirementsOperationFilter>();
-            options.SwaggerDoc("v1", new OpenApiInfo
-            {
-                Version = "v1",
-                Title = "ToDo API",
-                Description = "An ASP.NET Core Web API for managing ToDo items",
-                TermsOfService = new Uri("https://example.com/terms"),
-                Contact = new OpenApiContact
-                {
-                    Name = "Example Contact",
-                    Url = new Uri("https://example.com/contact")
-                },
-                License = new OpenApiLicense
-                {
-                    Name = "Example License",
-                    Url = new Uri("https://example.com/license")
-                }
-            });
+        AddIfDevelopmentSuppressModelStateInvalidFilter(builder);
 
-            //using System.Reflection;
-            var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-            options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
-        });
+        AddController<TutorPlatformDbContext>(builder, "Default");
 
-        builder.Services.AddAuthentication(x =>
-        {
-            x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddJwtBearer(x =>
-        {
-            x.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
-                ValidAudience = builder.Configuration["JwtSettings:Audience"],
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-                    builder.Configuration["JwtSettings:Key"])),
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
+        AddCompression(builder, CompressionLevel.Optimal);
 
-            };
-        });
+        AddSwagger(builder);
 
-        builder.Services.AddAuthorization(options =>
-        {
-            options.AddPolicy(IdentityData.AdminPolicyName, p =>
-                p.RequireClaim(IdentityData.AdminClaimName, "true"));
-            options.AddPolicy(IdentityData.TutorPolicyName, p =>
-                p.RequireClaim(IdentityData.TutorClaimName, "true"));
-            options.AddPolicy(IdentityData.StudentPolicyName, p =>
-                p.RequireClaim(IdentityData.StudentClaimName, "true"));
-        });
+        AddAuthenticationAndAuthorisation(builder);
+
 
         var app = builder.Build();
 
+        IfIsDevelopmentUseSwaggerElseHsts(app);
+
+        app.UseHttpsRedirection();
+        app.UseStaticFiles();
+
+        app.UseRouting();
+        app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+
+        app.UseAuthentication();
+        app.UseAuthorization();
+
+        app.MapControllers();
+
+        app.Run();
+    }
+
+    private static void IfIsDevelopmentUseSwaggerElseHsts(WebApplication app)
+    {
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
@@ -127,19 +70,5 @@ public class Program
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
-
-        app.UseHttpsRedirection();
-        app.UseStaticFiles();
-
-        app.UseRouting();
-        app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
-
-
-        app.UseAuthentication();
-        app.UseAuthorization();
-
-        app.MapControllers();
-
-        app.Run();
     }
 }

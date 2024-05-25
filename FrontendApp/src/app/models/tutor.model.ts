@@ -2,71 +2,49 @@ import { AgeGroup } from "../enums/age-group.enum";
 import { Experience } from "../enums/experience.enum";
 import { Gender } from "../enums/gernder.enum";
 
-class TutorDto {
-    id: string;
-    login: string;
-    password: string;
-    role: string;
+export class TutorDto {
     firstName: string;
     lastName: string;
-    jwtToken: string;
     email: string;
     phoneNumber: string;
     viber: string;
     telegram: string;
-    isVerified: boolean;
+    isVerified: boolean | null;
     isProfileActive: boolean;
-    experience: Experience;
+    experience: Experience | null;
     subjects: SubjectDTO[];
     educations: EducationDTO[];
-    city: string;
-    canHost: boolean;
-    canTravel: boolean;
-    canTeachOnline: boolean;
     shortDescription: string;
     detailedDescription: string;
-    ageGroup: AgeGroup;
-    gender: Gender;
+    priceToShow: number | null;
+    ageGroup: AgeGroup | null;
+    gender: Gender | null;
     youtubeVideoLink: string;
     schedule: boolean[][];
     reviews: ReviewDTO[];
 
     constructor(
-        id: string = "",
-        login: string = "",
-        password: string = "",
-        role: string = "",
         firstName: string = "",
         lastName: string = "",
-        jwtToken: string = "",
         email: string = "",
         phoneNumber: string = "",
         viber: string = "",
         telegram: string = "",
-        isVerified: boolean = false,
+        isVerified: boolean | null = null,
         isProfileActive: boolean = false,
-        experience: Experience = Experience.LessThan1,
+        experience: Experience | null = null,
         subjects: SubjectDTO[] = [],
         educations: EducationDTO[] = [],
-        city: string = "",
-        canHost: boolean = false,
-        canTravel: boolean = false,
-        canTeachOnline: boolean = false,
         shortDescription: string = "",
         detailedDescription: string = "",
-        ageGroup: AgeGroup = AgeGroup.Age18_25,
-        gender: Gender = Gender.Other,
+        ageGroup: AgeGroup | null = null,
+        gender: Gender | null = null,
         youtubeVideoLink: string = "",
         schedule: boolean[][] = [],
         reviews: ReviewDTO[] = []
     ) {
-        this.id = id;
-        this.login = login;
-        this.password = password;
-        this.role = role;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.jwtToken = jwtToken;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.viber = viber;
@@ -76,10 +54,6 @@ class TutorDto {
         this.experience = experience;
         this.subjects = subjects;
         this.educations = educations;
-        this.city = city;
-        this.canHost = canHost;
-        this.canTravel = canTravel;
-        this.canTeachOnline = canTeachOnline;
         this.shortDescription = shortDescription;
         this.detailedDescription = detailedDescription;
         this.ageGroup = ageGroup;

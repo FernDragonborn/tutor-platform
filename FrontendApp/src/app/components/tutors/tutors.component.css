@@ -7,3 +7,6 @@ h2 {
     cursor: pointer;
 }
 
+.filter-selected{
+    padding: 10px 32px;
+}

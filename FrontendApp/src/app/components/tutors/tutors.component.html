@@ -1,7 +1,15 @@
-<div class="d-flex bg-general text-color justify-content-center">
-    <div class="d-flex flex-column bg-block rounded-4 p-3">
+<div class="d-flex bg-general text-color justify-content-center mx-5">
+    <div class="d-flex flex-column bg-block rounded-4 p-3" style="flex: 1 0 300px; margin-right: 40px;">
         <div>
-            <h2 (click)="toggleSubjectsMenu()">Список предметів</h2>
+            @if (selectedSubject) {
+            <p class="filter-selected"> {{ getSubjectName(selectedSubject) }}</p>
+            }
+            @if(selectedGrade) {
+            <p (click)="toggleSubjectsMenu()"> {{ getGradeName(selectedGrade) }}</p>
+            }
+        </div>
+        <div id="subjects-menu">
+            <h2 (click)="toggleSubjectsMenu()" class="hover-accent">Список предметів</h2>
             <ul class="list-group" [hidden]="isSubjectsMenuCollapsed">
                 <li class="border border-dark list-group-item" *ngFor="let subject of subjects;"
                     [attr.id]="generateId(subject)">
@@ -12,8 +20,8 @@
                 </li>
             </ul>
         </div>
-        <div>
-            <h2 (click)="toggleGradesMenu()">Список рівнів навчання</h2>
+        <div id="grades-menu">
+            <h2 (click)="toggleGradesMenu()" class="hover-accent">Список рівнів навчання</h2>
             <ul class="list-group" [hidden]="isGradesMenuCollapsed">
                 <li class="border border-dark list-group-item" *ngFor="let grade of grades;"
                     [attr.id]="generateId(grade)">
@@ -24,32 +32,21 @@
                 </li>
             </ul>
         </div>
-    </div>
-    @if (selectedSubject) {
-    <h2>Репетитори для предмета: {{ getSubjectName(selectedSubject) }}</h2>
-    @if(tutors.length > 0){
-    <ul>
-        @for(tutor of tutors; track tutor.Id){
-        <li>
-            {{ tutor.name }}
-            }@empty {
-        <li>
-            <p>Поки у нас нема стільки репетиторів 😓</p>
-        </li>
+        @if(tutors.length > 0){
+        <ul>
+            @for(tutor of tutors; track tutor.email){
+            <li>
+                {{ tutor.firstName + ' ' + tutor.lastName}}
+                }@empty {
+            <li>
+                <p>Поки у нас нема стільки репетиторів 😓</p>
+            </li>
+            }
+        </ul>
         }
-    </ul>
-    }
-    }
-    @if(selectedGrade) {
-    <h2>Репетитори для рівня навчання: {{ getGradeName(selectedGrade) }}</h2>
-    <ul *ngIf="tutors.length > 0">
-        <li *ngFor="let tutor of tutors">
-            {{ tutor.name }}
-        </li>
-    </ul>
-    }
-    <!--
-    <div class="bg-block rounded-4" style="width: 470px">
     </div>
-  -->
+
+    <div class="w-100 bg-block rounded-4">
+    </div>
+
 </div>
