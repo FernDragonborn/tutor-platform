@@ -1,4 +1,4 @@
-class SubjectDTO {
+export class SubjectDto {
     subjectName: string;
     price: number;
     grades: string[];

@@ -1,6 +1,10 @@
 import { AgeGroup } from "../enums/age-group.enum";
 import { Experience } from "../enums/experience.enum";
 import { Gender } from "../enums/gernder.enum";
+import { EducationDto } from "./education.model";
+import { ReviewDto } from "./review.model";
+import { SubjectDto } from "./subject.model";
+
 
 export class TutorDto {
     firstName: string;
@@ -12,8 +16,8 @@ export class TutorDto {
     isVerified: boolean | null;
     isProfileActive: boolean;
     experience: Experience | null;
-    subjects: SubjectDTO[];
-    educations: EducationDTO[];
+    subjects: SubjectDto[];
+    educations: EducationDto[];
     shortDescription: string;
     detailedDescription: string;
     priceToShow: number | null;
@@ -21,7 +25,7 @@ export class TutorDto {
     gender: Gender | null;
     youtubeVideoLink: string;
     schedule: boolean[][];
-    reviews: ReviewDTO[];
+    reviews: ReviewDto[];
 
     constructor(
         firstName: string = "",
@@ -33,15 +37,15 @@ export class TutorDto {
         isVerified: boolean | null = null,
         isProfileActive: boolean = false,
         experience: Experience | null = null,
-        subjects: SubjectDTO[] = [],
-        educations: EducationDTO[] = [],
+        subjects: SubjectDto[] = [],
+        educations: EducationDto[] = [],
         shortDescription: string = "",
         detailedDescription: string = "",
         ageGroup: AgeGroup | null = null,
         gender: Gender | null = null,
         youtubeVideoLink: string = "",
         schedule: boolean[][] = [],
-        reviews: ReviewDTO[] = []
+        reviews: ReviewDto[] = []
     ) {
         this.firstName = firstName;
         this.lastName = lastName;

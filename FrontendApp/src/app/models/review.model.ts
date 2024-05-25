@@ -1,4 +1,4 @@
-class ReviewDTO {
+export class ReviewDto {
     rating: number;
     commentatorName: string;
     date: string;

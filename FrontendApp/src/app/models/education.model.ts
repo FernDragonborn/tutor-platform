@@ -1,4 +1,4 @@
-class EducationDTO {
+export class EducationDto {
     universityName: string;
     degree: string;
     graduationYear: number;
