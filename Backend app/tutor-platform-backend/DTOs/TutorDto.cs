@@ -12,18 +12,19 @@ namespace TutorPlatformBackend.DTOs
         public bool? IsVerified { get; set; }
         public bool? IsProfileActive { get; set; }
         public Experience? Experience { get; set; }
-        public ICollection<SubjectDTO>? Subjects { get; set; }
-        public ICollection<EducationDTO>? Educations { get; set; }
-        public string? City { get; set; }
-        public bool? CanHost { get; set; }
-        public bool? CanTravel { get; set; }
-        public bool? CanTeachOnline { get; set; }
+        public ICollection<SubjectDto>? Subjects { get; set; }
+        public EducationDto? Education { get; set; }
+        //public string? City { get; set; }
+        //public bool? CanHost { get; set; }
+        //public bool? CanTravel { get; set; }
+        //public bool? CanTeachOnline { get; set; }
         public string? ShortDescription { get; set; }
-        public string? DetailedDescription { get; set; }
+        public string? LongDescription { get; set; }
         public AgeGroup? AgeGroup { get; set; }
         public Gender? Gender { get; set; }
         public string? YoutubeVideoLink { get; set; }
-        public ICollection<ScheduleDto>? Schedule { get; set; }
+        public int? priceToShow { get; set; }
+        public bool[,]? Schedule { get; set; }
         public ICollection<ReviewDTO>? Reviews { get; set; }
 
         public TutorDto() { }
@@ -40,14 +41,15 @@ namespace TutorPlatformBackend.DTOs
             IsVerified = tutor.IsVerified;
             IsProfileActive = tutor.IsProfileActive;
             Experience = tutor.Experience;
-            //Subjects = tutor.Subjects != null ? new List<SubjectDTO>(tutor.Subjects.Select(s => new SubjectDTO(s))) : new List<SubjectDTO>();
-            //Educations = tutor.Educations != null ? new List<EducationDTO>(tutor.Educations.Select(e => new EducationDTO(e))) : new List<EducationDTO>();
-            City = tutor.City;
-            CanHost = tutor.CanHost;
-            CanTravel = tutor.CanCome;
-            CanTeachOnline = tutor.CanTeachOnline;
+            //--------------IF UNCOMMENTING DO NOT FORGET TO UPDATE FRONTEND MODELS-----------------
+            //Subjects = tutor.Subjects != null ? new List<SubjectDto>(tutor.Subjects.Select(s => new SubjectDto(s))) : new List<SubjectDto>();
+            //Educations = tutor.Educations != null ? new List<EducationDto>(tutor.Educations.Select(e => new EducationDto(e))) : new List<EducationDto>();
+            //City = tutor.City;
+            //CanHost = tutor.CanHost;
+            //CanTravel = tutor.CanCome;
+            //CanTeachOnline = tutor.CanTeachOnline;
             ShortDescription = tutor.ShortDescription;
-            DetailedDescription = tutor.DetailedDescription;
+            LongDescription = tutor.LongDescription;
             AgeGroup = tutor.AgeGroup;
             Gender = tutor.Gender;
             YoutubeVideoLink = tutor.YoutubeVideoLink;

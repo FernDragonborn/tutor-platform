@@ -29,6 +29,10 @@ a:hover{
     color: #48a391!important;
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
 }
+.hover-accent:hover{
+    color: #48a391!important;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
+}
 .horisontal-centered{
     margin-left: auto;
     margin-right: auto;

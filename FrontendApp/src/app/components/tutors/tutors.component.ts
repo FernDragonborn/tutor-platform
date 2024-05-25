@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { SubjectType, SubjectNamesUa } from '../../enums/subject-type.enum';
 import { GradeLevel, GradeNamesUa } from 'src/app/enums/grade-level.enum';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TutorService } from 'src/app/services/tutor.service';
+import { TutorDto } from 'src/app/models/tutor.model';
 
 @Component({
   selector: 'app-tutors',
@@ -14,9 +15,10 @@ export class TutorsComponent {
   grades = Object.values(GradeLevel);
   selectedSubject: SubjectType | null = null;
   selectedGrade: GradeLevel | null = null;
-  tutors: any[] = [];
+  tutors: TutorDto[] = [];
   isSubjectsMenuCollapsed = false;
   isGradesMenuCollapsed = false;
+  allFoundedCount : number = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -29,12 +31,7 @@ export class TutorsComponent {
       const subject = params.get('subject') as SubjectType;
       const grade = params.get('grade') as GradeLevel;
       if (subject) {
-        this.selectedSubject = subject;
-        this.fetchTutorsBySubject(subject);
-      }
-      if (grade) {
-        this.selectedGrade = grade;
-        this.fetchTutorsByGrade(grade);
+        this.fetchTutors();
       }
     });
   }
@@ -51,18 +48,9 @@ export class TutorsComponent {
     return `item-${item}`;
   }
 
-  toggleSubjectsMenu(): void {
-    this.isSubjectsMenuCollapsed = !this.isSubjectsMenuCollapsed;
-  }
-
-  toggleGradesMenu(): void {
-    this.isGradesMenuCollapsed = !this.isGradesMenuCollapsed;
-  }
-
   onSubjectSelected(subject: SubjectType): void {
     this.selectedSubject = subject;
-    this.selectedGrade = null;
-    this.isSubjectsMenuCollapsed = true;
+    this.toggleSubjectsMenu();
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: { subject },
@@ -72,8 +60,7 @@ export class TutorsComponent {
 
   onGradeSelected(grade: GradeLevel): void {
     this.selectedGrade = grade;
-    this.selectedSubject = null;
-    this.isGradesMenuCollapsed = true;
+    this.toggleGradesMenu();
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: { grade },
@@ -81,15 +68,17 @@ export class TutorsComponent {
     });
   }
 
-  private fetchTutorsBySubject(subject: SubjectType): void {
-    this.tutorService.getTutorsBySubject(subject).subscribe(data => {
-      this.tutors = data;
-    });
+  toggleSubjectsMenu(): void {
+    this.isSubjectsMenuCollapsed = !this.isSubjectsMenuCollapsed;
   }
 
-  private fetchTutorsByGrade(grade: GradeLevel): void {
-    this.tutorService.getTutorsByGrade(grade).subscribe(data => {
-      this.tutors = data;
+  toggleGradesMenu(): void {
+    this.isGradesMenuCollapsed = !this.isGradesMenuCollapsed;
+  }
+  private fetchTutors(): void {
+    this.tutorService.getTutors().subscribe(data => {
+      this.allFoundedCount = data.allFoundedCount
+      this.tutors = data.tutors;
     });
   }
 }

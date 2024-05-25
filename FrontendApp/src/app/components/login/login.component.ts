@@ -24,17 +24,18 @@ export class LoginComponent {
       .subscribe((userDto) => {
         this.user = userDto;
         localStorage.setItem('jwtToken', this.user.jwtToken);
-        localStorage.setItem('userId', this.user.userId);
+        localStorage.setItem('userId', this.user.Id);
         console.log('logged in');
       })
   }
-
+  //FIXME do i need to pass user in method?
+  //renewToken(user: UserDto): void
   renewToken(user: UserDto): void {
     this.authService.renewToken(this.user)
       .subscribe((userDto) => {
         this.user = userDto;
         localStorage.setItem('jwtToken', this.user.jwtToken);
-        localStorage.setItem('userId', this.user.userId);
+        localStorage.setItem('userId', this.user.Id);
         console.log('token renewed');
     })
   }
@@ -44,7 +45,7 @@ export class LoginComponent {
       .subscribe((userDto) => {
         this.user = userDto;
         localStorage.setItem('jwtToken', this.user.jwtToken);
-        localStorage.setItem('userId', this.user.userId);
+        localStorage.setItem('userId', this.user.Id);
         console.log('regitered new user');
       })
   }

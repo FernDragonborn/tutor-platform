@@ -128,7 +128,7 @@ public static class AuthService
             LastName = tutorDto.LastName,
             FirstName = tutorDto.FirstName,
             ShortDescription = tutorDto.ShortDescription,
-            DetailedDescription = tutorDto.DetailedDescription,
+            LongDescription = tutorDto.LongDescription,
             AgeGroup = (AgeGroup)tutorDto.AgeGroup,
             Gender = (Gender)tutorDto.Gender,
             Schedule = new EFBoolCollection()

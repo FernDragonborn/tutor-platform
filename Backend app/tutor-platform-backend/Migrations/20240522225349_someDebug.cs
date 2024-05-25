@@ -54,7 +54,7 @@ namespace TutorPlatformBackend.Migrations
                 oldType: "bit");
 
             migrationBuilder.AlterColumn<string>(
-                name: "DetailedDescription",
+                name: "LongDescription",
                 table: "Tutors",
                 type: "nvarchar(1000)",
                 maxLength: 1000,
@@ -127,7 +127,7 @@ namespace TutorPlatformBackend.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "DetailedDescription",
+                name: "LongDescription",
                 table: "Tutors",
                 type: "nvarchar(4000)",
                 maxLength: 4000,

@@ -47,24 +47,24 @@ public class Tutor : User
     public virtual IList<Subject> Subjects { get; set; }
 
     [Required]
-    public virtual IList<Education> Educations { get; set; }
+    public virtual Education Education { get; set; }
 
     public virtual IList<EducationDocument>? EducationDocuments { get; set; }
 
-    [MaxLength(100)]
-    public string? City { get; set; }
+    //[MaxLength(100)]
+    //public string? City { get; set; }
 
-    [Required]
-    [DefaultValue(false)]
-    public bool? CanHost { get; set; }
+    //[Required]
+    //[DefaultValue(false)]
+    //public bool? CanHost { get; set; }
 
-    [Required]
-    [DefaultValue(false)]
-    public bool? CanCome { get; set; }
+    //[Required]
+    //[DefaultValue(false)]
+    //public bool? CanCome { get; set; }
 
-    [Required]
-    [DefaultValue(false)]
-    public bool? CanTeachOnline { get; set; }
+    //[Required]
+    //[DefaultValue(false)]
+    //public bool? CanTeachOnline { get; set; }
 
     [Required]
     [MaxLength(350)]
@@ -72,7 +72,7 @@ public class Tutor : User
 
     [Required]
     [MaxLength(1000)]
-    public string? DetailedDescription { get; set; }
+    public string? LongDescription { get; set; }
 
     [Required]
     public AgeGroup AgeGroup { get; set; }

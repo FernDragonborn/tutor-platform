@@ -12,35 +12,18 @@ using TutorPlatformBackend.DbContext;
 namespace TutorPlatformBackend.Migrations
 {
     [DbContext(typeof(TutorPlatformDbContext))]
-    [Migration("20240522225349_someDebug")]
-    partial class someDebug
+    [Migration("20240525193454_ChangedEducationsFromListToOneAndRemovedLocationAttributesAndReworkedSchedule")]
+    partial class ChangedEducationsFromListToOneAndRemovedLocationAttributesAndReworkedSchedule
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.14")
+                .HasAnnotation("ProductVersion", "8.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("EFBoolCollection", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("EFBoolCollection");
-                });
 
             modelBuilder.Entity("TutorPlatformBackend.Models.Admin", b =>
                 {
@@ -117,7 +100,8 @@ namespace TutorPlatformBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TutorId");
+                    b.HasIndex("TutorId")
+                        .IsUnique();
 
                     b.ToTable("Education");
                 });
@@ -324,27 +308,6 @@ namespace TutorPlatformBackend.Migrations
                     b.Property<int>("AgeGroup")
                         .HasColumnType("int");
 
-                    b.Property<bool?>("CanCome")
-                        .IsRequired()
-                        .HasColumnType("bit");
-
-                    b.Property<bool?>("CanHost")
-                        .IsRequired()
-                        .HasColumnType("bit");
-
-                    b.Property<bool?>("CanTeachOnline")
-                        .IsRequired()
-                        .HasColumnType("bit");
-
-                    b.Property<string>("City")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("LongDescription")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -377,6 +340,11 @@ namespace TutorPlatformBackend.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("LongDescription")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasMaxLength(60)
@@ -399,8 +367,9 @@ namespace TutorPlatformBackend.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("ScheduleId")
-                        .HasColumnType("int");
+                    b.Property<string>("Schedule")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ShortDescription")
                         .IsRequired()
@@ -425,16 +394,14 @@ namespace TutorPlatformBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ScheduleId");
-
                     b.ToTable("Tutors");
                 });
 
             modelBuilder.Entity("TutorPlatformBackend.Models.Education", b =>
                 {
                     b.HasOne("TutorPlatformBackend.Models.Tutor", "Tutor")
-                        .WithMany("Educations")
-                        .HasForeignKey("TutorId")
+                        .WithOne("Education")
+                        .HasForeignKey("TutorPlatformBackend.Models.Education", "TutorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -508,17 +475,6 @@ namespace TutorPlatformBackend.Migrations
                     b.Navigation("Tutor");
                 });
 
-            modelBuilder.Entity("TutorPlatformBackend.Models.Tutor", b =>
-                {
-                    b.HasOne("EFBoolCollection", "Schedule")
-                        .WithMany()
-                        .HasForeignKey("ScheduleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Schedule");
-                });
-
             modelBuilder.Entity("TutorPlatformBackend.Models.Student", b =>
                 {
                     b.Navigation("Lessons");
@@ -531,9 +487,10 @@ namespace TutorPlatformBackend.Migrations
 
             modelBuilder.Entity("TutorPlatformBackend.Models.Tutor", b =>
                 {
-                    b.Navigation("EducationDocuments");
+                    b.Navigation("Education")
+                        .IsRequired();
 
-                    b.Navigation("Educations");
+                    b.Navigation("EducationDocuments");
 
                     b.Navigation("Reviews");
 
