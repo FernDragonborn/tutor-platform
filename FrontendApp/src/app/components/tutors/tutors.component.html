@@ -1,47 +1,55 @@
 <div class="d-flex bg-general text-color justify-content-center">
-  <div class="d-flex flex-column bg-block rounded-4 p-3">
-    <div>
-      <h2 (click)="toggleSubjectsMenu()">Список предметів</h2>
-      <ul class="list-group" [hidden]="isSubjectsMenuCollapsed">
-        <li class="border border-dark list-group-item" *ngFor="let subject of subjects;"
-          [attr.id]="generateId(subject)">
-          <a [routerLink]="[]" [queryParams]="{ subject: subject }" queryParamsHandling="merge"
-            (click)="onSubjectSelected(subject)">
-            {{ getSubjectName(subject) }}
-          </a>
-        </li>
-      </ul>
+    <div class="d-flex flex-column bg-block rounded-4 p-3">
+        <div>
+            <h2 (click)="toggleSubjectsMenu()">Список предметів</h2>
+            <ul class="list-group" [hidden]="isSubjectsMenuCollapsed">
+                <li class="border border-dark list-group-item" *ngFor="let subject of subjects;"
+                    [attr.id]="generateId(subject)">
+                    <a [routerLink]="[]" [queryParams]="{ subject: subject }" queryParamsHandling="merge"
+                        (click)="onSubjectSelected(subject)">
+                        {{ getSubjectName(subject) }}
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div>
+            <h2 (click)="toggleGradesMenu()">Список рівнів навчання</h2>
+            <ul class="list-group" [hidden]="isGradesMenuCollapsed">
+                <li class="border border-dark list-group-item" *ngFor="let grade of grades;"
+                    [attr.id]="generateId(grade)">
+                    <a [routerLink]="[]" [queryParams]="{ grade: grade }" queryParamsHandling="merge"
+                        (click)="onGradeSelected(grade)">
+                        {{ getGradeName(grade) }}
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
-    <div>
-      <h2 (click)="toggleGradesMenu()">Список рівнів навчання</h2>
-      <ul class="list-group" [hidden]="isGradesMenuCollapsed">
-        <li class="border border-dark list-group-item" *ngFor="let grade of grades;" [attr.id]="generateId(grade)">
-          <a [routerLink]="[]" [queryParams]="{ grade: grade }" queryParamsHandling="merge"
-            (click)="onGradeSelected(grade)">
-            {{ getGradeName(grade) }}
-          </a>
-        </li>
-      </ul>
-    </div>
-  </div>
-  <div *ngIf="selectedSubject">
+    @if (selectedSubject) {
     <h2>Репетитори для предмета: {{ getSubjectName(selectedSubject) }}</h2>
-    <ul *ngIf="tutors.length > 0">
-      <li *ngFor="let tutor of tutors">
-        {{ tutor.name }}
-      </li>
+    @if(tutors.length > 0){
+    <ul>
+        @for(tutor of tutors; track tutor.Id){
+        <li>
+            {{ tutor.name }}
+            }@empty {
+        <li>
+            <p>Поки у нас нема стільки репетиторів 😓</p>
+        </li>
+        }
     </ul>
-  </div>
-
-  <div *ngIf="selectedGrade">
+    }
+    }
+    @if(selectedGrade) {
     <h2>Репетитори для рівня навчання: {{ getGradeName(selectedGrade) }}</h2>
     <ul *ngIf="tutors.length > 0">
-      <li *ngFor="let tutor of tutors">
-        {{ tutor.name }}
-      </li>
+        <li *ngFor="let tutor of tutors">
+            {{ tutor.name }}
+        </li>
     </ul>
-  </div>
-  <div class="bg-block rounded-4" style="width: 470px">
-    f
-  </div>
+    }
+    <!--
+    <div class="bg-block rounded-4" style="width: 470px">
+    </div>
+  -->
 </div>

@@ -67,13 +67,13 @@ public class ScheduleService
         throw new NotImplementedException();
     }
 
-    internal Result<bool[,]> GetTutorSchedule(Guid tutorId)
+    internal Result<bool[,]?> GetTutorSchedule(Guid tutorId)
     {
-        var table = ConvertBoolArrToTable(
-            _context.Tutors.Find(tutorId)
-                .Schedule.ToArray()
-            );
-        return new Result<bool[,]>(true, table, "");
+        var tutor = _context.Tutors.Find(tutorId);
+        if (tutor is null) new Result<bool[,]?>(false, null, "Tutor not foud by provided id");
+
+        var table = ConvertBoolArrToTable(tutor.Schedule.ToArray());
+        return new Result<bool[,]?>(true, table, "");
     }
 
     internal Result UpdateTutorSchedule(bool[,] updatedSchedule, string tutorId)
@@ -84,6 +84,17 @@ public class ScheduleService
         }
         EFBoolCollection boolCollection = new();
         boolCollection.AddRange(updatedSchedule.Cast<bool>().ToArray());
+        var tutor = _context.Tutors.Find(tutorGuid);
+        if (tutor is null)
+        {
+            return TutorNotFoundById();
+        }
+
+
         return new Result(true, "");
     }
+
+    private Result<T?> TutorNotFoundById<T>() => new(false, default, "Tutor not foud by provided id");
+    private Result TutorNotFoundById() => new(false, "Tutor not foud by provided id");
+
 }

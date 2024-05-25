@@ -18,8 +18,8 @@ public class ScheduleController : Controller
             _scheduleService = scheduleService;
         }
 
-        [HttpGet("{tutorId}")]
-        public IActionResult GetTutorSchedule(Guid tutorId)
+        [HttpGet("{tutorId:guid}")]
+        public IActionResult GetTutorSchedule([FromRoute] Guid tutorId)
         {
             Result<bool[,]> result = _scheduleService.GetTutorSchedule(tutorId);
             if (result.IsSuccess)
@@ -29,8 +29,8 @@ public class ScheduleController : Controller
             else return NotFound(result.Message);
         }
 
-        [HttpPut]
-        public IActionResult UpdateTutorSchedule(bool[][] updatedSchedule, string TutorId)
+        [HttpPut("{tutorId:guid}")]
+        public IActionResult UpdateTutorSchedule([FromBody] bool[][] updatedSchedule, [FromRoute] Guid TutorId)
         {
             if (updatedSchedule == null)
             {
@@ -43,36 +43,36 @@ public class ScheduleController : Controller
             return NoContent();
         }
 
-        [HttpGet("{studentId}")]
-        [Authorize()]
-        public ActionResult<IList<StudentLesson>> GetStudentLessons(Guid studentId)
-        {
-            // Отримати уроки учня за допомогою сервісу
-            IList<StudentLesson> lessons = _scheduleService.GetStudentLessons(studentId);
-            return Ok(lessons);
-        }
+        //[HttpGet("{studentId:guid}")]
+        //[Authorize()]
+        //public ActionResult<IList<StudentLesson>> GetStudentLessons([FromRoute] Guid studentId)
+        //{
+        //    // Отримати уроки учня за допомогою сервісу
+        //    IList<StudentLesson> lessons = _scheduleService.GetStudentLessons(studentId);
+        //    return Ok(lessons);
+        //}
 
-        [HttpPost]
-        public IActionResult BookLesson(StudentLesson lesson)
-        {
-            if (lesson == null)
-            {
-                return BadRequest();
-            }
+        //[HttpPost]
+        //public IActionResult BookLesson(StudentLesson lesson)
+        //{
+        //    if (lesson == null)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            // Забронювати урок за допомогою сервісу
-            _scheduleService.BookLesson(lesson);
+        //    // Забронювати урок за допомогою сервісу
+        //    _scheduleService.BookLesson(lesson);
 
-            return Ok();
-        }
+        //    return Ok();
+        //}
 
-        [HttpDelete("{lessonId}")]
-        public IActionResult CancelLesson(Guid lessonId)
-        {
-            // Скасувати урок за допомогою сервісу
-            _scheduleService.CancelLesson(lessonId);
+        //[HttpDelete("{lessonId}")]
+        //public IActionResult CancelLesson(Guid lessonId)
+        //{
+        //    // Скасувати урок за допомогою сервісу
+        //    _scheduleService.CancelLesson(lessonId);
 
-            return Ok();
-        }
+        //    return Ok();
+        //}
     }
 }

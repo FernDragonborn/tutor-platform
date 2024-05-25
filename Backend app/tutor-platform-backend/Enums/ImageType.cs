@@ -2,8 +2,8 @@
 {
     public enum ImageType
     {
-        jpeg,
-        png,
-        pdf,
+        Jpeg,
+        Png,
+        Pdf,
     }
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Subject, SubjectNamesUa } from '../../enums/subject.enum';
-import { Grades, GradesNamesUa } from 'src/app/enums/grades.enum';
+import { SubjectType, SubjectNamesUa } from '../../enums/subject-type.enum';
+import { GradeLevel, GradeNamesUa } from 'src/app/enums/grade-level.enum';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TutorService } from 'src/app/services/tutor.service';
 
@@ -10,10 +10,10 @@ import { TutorService } from 'src/app/services/tutor.service';
   styleUrls: ['./tutors.component.css']
 })
 export class TutorsComponent {
-  subjects = Object.values(Subject);
-  grades = Object.values(Grades);
-  selectedSubject: Subject | null = null;
-  selectedGrade: Grades | null = null;
+  subjects = Object.values(SubjectType);
+  grades = Object.values(GradeLevel);
+  selectedSubject: SubjectType | null = null;
+  selectedGrade: GradeLevel | null = null;
   tutors: any[] = [];
   isSubjectsMenuCollapsed = false;
   isGradesMenuCollapsed = false;
@@ -26,8 +26,8 @@ export class TutorsComponent {
 
   ngOnInit(): void {
     this.route.queryParamMap.subscribe(params => {
-      const subject = params.get('subject') as Subject;
-      const grade = params.get('grade') as Grades;
+      const subject = params.get('subject') as SubjectType;
+      const grade = params.get('grade') as GradeLevel;
       if (subject) {
         this.selectedSubject = subject;
         this.fetchTutorsBySubject(subject);
@@ -39,12 +39,12 @@ export class TutorsComponent {
     });
   }
 
-  getSubjectName(subject: Subject): string {
+  getSubjectName(subject: SubjectType): string {
     return SubjectNamesUa[subject];
   }
 
-  getGradeName(grade: Grades): string {
-    return GradesNamesUa[grade];
+  getGradeName(grade: GradeLevel): string {
+    return GradeNamesUa[grade];
   }
 
   generateId(item: string): string {
@@ -59,7 +59,7 @@ export class TutorsComponent {
     this.isGradesMenuCollapsed = !this.isGradesMenuCollapsed;
   }
 
-  onSubjectSelected(subject: Subject): void {
+  onSubjectSelected(subject: SubjectType): void {
     this.selectedSubject = subject;
     this.selectedGrade = null;
     this.isSubjectsMenuCollapsed = true;
@@ -70,7 +70,7 @@ export class TutorsComponent {
     });
   }
 
-  onGradeSelected(grade: Grades): void {
+  onGradeSelected(grade: GradeLevel): void {
     this.selectedGrade = grade;
     this.selectedSubject = null;
     this.isGradesMenuCollapsed = true;
@@ -81,13 +81,13 @@ export class TutorsComponent {
     });
   }
 
-  private fetchTutorsBySubject(subject: Subject): void {
+  private fetchTutorsBySubject(subject: SubjectType): void {
     this.tutorService.getTutorsBySubject(subject).subscribe(data => {
       this.tutors = data;
     });
   }
 
-  private fetchTutorsByGrade(grade: Grades): void {
+  private fetchTutorsByGrade(grade: GradeLevel): void {
     this.tutorService.getTutorsByGrade(grade).subscribe(data => {
       this.tutors = data;
     });
