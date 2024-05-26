@@ -24,6 +24,8 @@ namespace TutorPlatformBackend.DTOs
         public Gender? Gender { get; set; }
         public string? YoutubeVideoLink { get; set; }
         public int? priceToShow { get; set; }
+        public byte[]? ProfilePic { get; set; }
+
         public bool[,]? Schedule { get; set; }
         public ICollection<ReviewDTO>? Reviews { get; set; }
 

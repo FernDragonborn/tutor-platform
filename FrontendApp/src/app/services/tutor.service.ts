@@ -27,7 +27,7 @@ export class TutorService {
           MaxPrice: params['MaxPrice'] || null,
           Page: params['Page'] || null
         };
-  
+        console.log(filters);
         const queryParams = Object.keys(filters)
           .filter(key => filters[key] !== null)
           .map(key => `${key}=${filters[key]}`)

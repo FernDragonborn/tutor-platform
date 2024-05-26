@@ -22,6 +22,7 @@ public class Program
 
         builder.Services.AddScoped<IVirusScanner, WindowsEmbededVirusScanner>();
         builder.Services.AddScoped<IImageConverter, SimplmageConverter>();
+        builder.Services.AddScoped<FilterService>();
 
         AddIfDevelopmentSuppressModelStateInvalidFilter(builder);
 

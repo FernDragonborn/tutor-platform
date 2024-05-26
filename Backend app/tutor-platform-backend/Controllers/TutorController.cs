@@ -10,9 +10,9 @@ public class TutorController : Controller
 {
     private readonly FilterService _filterService;
 
-    public TutorController(FilterService scheduleService)
+    public TutorController(FilterService filterService)
     {
-        _filterService = scheduleService;
+        _filterService = filterService;
     }
 
     [ProducesResponseType(StatusCodes.Status200OK)]

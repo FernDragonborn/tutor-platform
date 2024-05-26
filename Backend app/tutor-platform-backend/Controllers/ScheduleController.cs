@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 using TutorPlatformBackend.Services;
 
 namespace TutorPlatformBackend.Controllers;
@@ -16,7 +19,7 @@ public class ScheduleController : Controller
     }
 
     [HttpGet("{tutorId:guid}")]
-    public IActionResult GetTutorSchedule([FromRoute] Guid tutorId)
+    public async Task<IActionResult> GetTutorSchedule([FromRoute] Guid tutorId)
     {
         Result<bool[,]> result = _scheduleService.GetTutorSchedule(tutorId);
         if (result.IsSuccess)
@@ -26,18 +29,24 @@ public class ScheduleController : Controller
         else return NotFound(result.Message);
     }
 
-    [HttpPut("{tutorId}")]
-    public IActionResult UpdateTutorSchedule([FromBody] bool[,] updatedSchedule, [FromRoute] string TutorId)
+    [HttpPut]
+    [Authorize(Policy = Identity.IdentityData.TutorPolicyName)]
+    public IActionResult UpdateTutorSchedule([FromBody] bool[,] updatedSchedule)
     {
-        if (updatedSchedule == null)
+        if (updatedSchedule.Length == 0) return BadRequest("Schedule arr was null or empty");
+
+        var identity = HttpContext.User.Identity as ClaimsIdentity;
+        if (identity is null) return Unauthorized("Identity in JWT not provided");
+
+        string? tutorId = identity.Claims.FirstOrDefault(c => c.Type == "Id").Value;
+        if (tutorId.IsNullOrEmpty()) return BadRequest();
+
+        var result = _scheduleService.UpdateTutorSchedule(updatedSchedule, tutorId);
+        if (result.IsSuccess)
         {
-            return BadRequest();
+            return Ok();
         }
-
-        // Оновити розклад репетитора за допомогою сервісу
-        _scheduleService.UpdateTutorSchedule(updatedSchedule, TutorId);
-
-        return NoContent();
+        else return BadRequest(result.Message);
     }
 
     //[HttpGet("{studentId:guid}")]

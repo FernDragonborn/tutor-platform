@@ -14,7 +14,6 @@ export class ScheduleComponent implements OnInit {
   constructor(private scheduleService: ScheduleService) { }
 
   ngOnInit(): void {
-    // Генеруємо часові проміжки
     const startTime = 8;
     const endTime = 21;
     for (let hour = startTime; hour <= endTime; hour++) {

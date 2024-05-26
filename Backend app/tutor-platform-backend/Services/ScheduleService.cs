@@ -90,7 +90,6 @@ public class ScheduleService
             return TutorNotFoundById();
         }
 
-
         return new Result(true, "");
     }
 

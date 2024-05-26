@@ -20,6 +20,7 @@ export class TutorDto {
     educations: EducationDto[];
     shortDescription: string;
     detailedDescription: string;
+    profilePic: string | null;
     priceToShow: number | null;
     ageGroup: AgeGroup | null;
     gender: Gender | null;
@@ -41,6 +42,7 @@ export class TutorDto {
         educations: EducationDto[] = [],
         shortDescription: string = "",
         detailedDescription: string = "",
+        profilePic: string | null = null, 
         ageGroup: AgeGroup | null = null,
         gender: Gender | null = null,
         youtubeVideoLink: string = "",
@@ -60,6 +62,7 @@ export class TutorDto {
         this.educations = educations;
         this.shortDescription = shortDescription;
         this.detailedDescription = detailedDescription;
+        this.profilePic = profilePic;
         this.ageGroup = ageGroup;
         this.gender = gender;
         this.youtubeVideoLink = youtubeVideoLink;

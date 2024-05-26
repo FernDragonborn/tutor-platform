@@ -5,6 +5,18 @@ body {
     font-family: "Century Gothic",sans-serif; 
 }
 
+svg:hover path{
+    stroke: #48a391;
+}
+
+.nav-link{
+    color: white
+}
+
+.active{
+    color:darkgray;
+}
+
 .bg-block{
     background-color: #2f363c ;
 }

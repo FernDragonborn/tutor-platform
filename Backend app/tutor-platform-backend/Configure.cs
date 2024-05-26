@@ -36,9 +36,9 @@ namespace TutorPlatformBackend
             if (builder.Environment.IsDevelopment())
             {
                 builder.Services.Configure<ApiBehaviorOptions>(apiBehaviorOptions =>
-                {
-                    apiBehaviorOptions.SuppressModelStateInvalidFilter = true;
-                });
+            {
+                apiBehaviorOptions.SuppressModelStateInvalidFilter = true;
+            });
             }
         }
 

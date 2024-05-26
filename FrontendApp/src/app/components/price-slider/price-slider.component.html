@@ -1,0 +1,17 @@
+<div class="price-slider-container mt-3">
+    <h3 style="margin: 0; margin-bottom: 0.5rem;">Ціна за годину заняття</h3>
+    <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex flex-column">
+            <span class="value-label">ціна від:</span>
+            <p>₴{{ minValue }}</p>
+        </div>
+        <div class="d-flex flex-column">
+            <span class="value-label">ціна до:</span>
+            <p>₴{{ maxValue }}</p>
+        </div>
+
+        <button class=" btn btn-light h-50" (click)="updatePrices()">OK</button>
+
+    </div>
+    <ngx-slider [(value)]="minValue" [(highValue)]="maxValue" [options]="sliderOptions"></ngx-slider>
+</div>

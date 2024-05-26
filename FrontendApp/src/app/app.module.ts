@@ -19,6 +19,8 @@ import { DragNDropUploadComponent } from './components/drag-n-drop-upload/drag-n
 import { DialogConfirmComponent } from './components/dialog-confirm/dialog-confirm.component';
 import { FileDragNDropDirective } from './components/drag-n-drop-upload/file-drag-n-drop.directive';
 import { TutorsComponent } from './components/tutors/tutors.component';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { PriceSliderComponent } from './components/price-slider/price-slider.component';
 
 
 @NgModule({
@@ -29,6 +31,7 @@ import { TutorsComponent } from './components/tutors/tutors.component';
     DialogConfirmComponent,
     FileDragNDropDirective,
     TutorsComponent,
+    PriceSliderComponent
   ],
   imports: [
     RouterModule,
@@ -41,7 +44,8 @@ import { TutorsComponent } from './components/tutors/tutors.component';
     BrowserAnimationsModule,
     MatIconModule,
     MatButtonModule,
-    MatInputModule
+    MatInputModule,
+    NgxSliderModule
   ],
   providers: [AuthService,
   {

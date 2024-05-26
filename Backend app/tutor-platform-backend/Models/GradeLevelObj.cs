@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using TutorPlatformBackend.Enums;
 
 namespace TutorPlatformBackend.Models
@@ -11,8 +12,19 @@ namespace TutorPlatformBackend.Models
         [Required]
         public GradeLevelEnum GradeLevelEnum { get; set; }
 
+        [NotMapped]
+        private short _price;
+
         [Required]
-        [Range(0, 10000)]
-        public short Price { get; set; }
+        [Range(100, 2500)]
+        public short Price
+        {
+            get => _price;
+
+            set
+            {
+                if (value is > 100 and < 2500) _price = value;
+            }
+        }
     }
 }

@@ -19,20 +19,56 @@ export class TutorsComponent {
   isSubjectsMenuCollapsed = false;
   isGradesMenuCollapsed = false;
   allFoundedCount : number = 0;
+  minPrice : number = 100;
+  maxPrice : number = 2500;
+
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private tutorService: TutorService
+    private tutorService: TutorService,
   ) {}
 
   ngOnInit(): void {
-    this.route.queryParamMap.subscribe(params => {
-      const subject = params.get('subject') as SubjectType;
-      const grade = params.get('grade') as GradeLevel;
-      if (subject) {
-        this.fetchTutors();
+    this.fetchTutors();
+    this.route.queryParams.subscribe(params => {
+      this.minPrice = params['minPrice'];
+      this.maxPrice = params['maxPrice'];
+      this.fetchTutors();
+    });
+  }
+
+  onSubjectSelected(subject: SubjectType): void {
+    this.selectedSubject = subject;
+    this.toggleSubjectsMenu();
+    this.fetchTutors();
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { subject },
+      queryParamsHandling: 'merge'
+    });
+  }
+
+  onGradeSelected(grade: GradeLevel): void {
+    this.selectedGrade = grade;
+    this.toggleGradesMenu();
+    this.fetchTutors();
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { grade },
+      queryParamsHandling: 'merge'
+    });
+  }
+
+  private fetchTutors(): void {
+    this.tutorService.getTutors().subscribe(data => {
+      if(data == null){
+        this.allFoundedCount = 0;
+        this.tutors = [];
+        return;    
       }
+      this.allFoundedCount = data.allFoundedCount;
+      this.tutors = data.tutors;
     });
   }
 
@@ -48,37 +84,11 @@ export class TutorsComponent {
     return `item-${item}`;
   }
 
-  onSubjectSelected(subject: SubjectType): void {
-    this.selectedSubject = subject;
-    this.toggleSubjectsMenu();
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: { subject },
-      queryParamsHandling: 'merge'
-    });
-  }
-
-  onGradeSelected(grade: GradeLevel): void {
-    this.selectedGrade = grade;
-    this.toggleGradesMenu();
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: { grade },
-      queryParamsHandling: 'merge'
-    });
-  }
-
   toggleSubjectsMenu(): void {
     this.isSubjectsMenuCollapsed = !this.isSubjectsMenuCollapsed;
   }
 
   toggleGradesMenu(): void {
     this.isGradesMenuCollapsed = !this.isGradesMenuCollapsed;
-  }
-  private fetchTutors(): void {
-    this.tutorService.getTutors().subscribe(data => {
-      this.allFoundedCount = data.allFoundedCount
-      this.tutors = data.tutors;
-    });
   }
 }

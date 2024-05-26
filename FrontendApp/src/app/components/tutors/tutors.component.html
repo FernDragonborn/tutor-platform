@@ -32,21 +32,22 @@
                 </li>
             </ul>
         </div>
-        @if(tutors.length > 0){
-        <ul>
-            @for(tutor of tutors; track tutor.email){
-            <li>
-                {{ tutor.firstName + ' ' + tutor.lastName}}
-                }@empty {
-            <li>
-                <p>Поки у нас нема стільки репетиторів 😓</p>
-            </li>
-            }
-        </ul>
-        }
+        <app-price-slider></app-price-slider>
+        <div>
+        </div>
     </div>
 
     <div class="w-100 bg-block rounded-4">
+        @if(tutors.length > 0){
+        <ul *ngFor="let tutor of tutors">
+            <li>
+                {{ tutor.firstName + ' ' + tutor.lastName}}
+            <li>
+        </ul>
+        }
+        @else {
+        <p>Репетиторів за запитом не знайдено 😓</p>
+        }
     </div>
 
 </div>

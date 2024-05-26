@@ -1,5 +1,6 @@
 ﻿using TutorPlatformBackend.DbContext;
 using TutorPlatformBackend.DTOs;
+using TutorPlatformBackend.Models;
 
 namespace TutorPlatformBackend.Services
 {
@@ -43,7 +44,17 @@ namespace TutorPlatformBackend.Services
                         .Any(g => g.Price > filter.MaxPrice)));
             }
             //TODO add order
-            var tutors = query.Skip(20 * filter.Page ?? 0).Take(20).ToArray();
+            Tutor[] tutors;
+            try
+            {
+                tutors = query.Skip(20 * filter.Page ?? 0).Take(20).ToArray();
+                allFoundQuantity = query.Count();
+            }
+            catch
+            {
+                tutors = Array.Empty<Tutor>();
+                allFoundQuantity = 0;
+            }
 
             bool noSubjectValue = !filter.Subject.HasValue;
             bool noGradeLevelValue = !filter.GradeLevel.HasValue;
@@ -58,6 +69,8 @@ namespace TutorPlatformBackend.Services
                 Subjects = tutor.Subjects.Select(s => new SubjectDto { Type = s.Type }).ToArray(),
                 ShortDescription = tutor.ShortDescription,
                 LongDescription = tutor.LongDescription,
+                ProfilePic = tutor.ProfilePic,
+
                 priceToShow = tutor.Subjects
                     .Where(p => noSubjectValue || p.Type == filter.Subject.Value)
                     .First(p => noGradeLevelValue || p.GradeLevels
@@ -68,8 +81,6 @@ namespace TutorPlatformBackend.Services
             }).ToArray();
 
 
-
-            allFoundQuantity = query.Count();
 
             bool isAnyFound = allFoundQuantity > 0;
             return new Result<TutorDto[]>(isAnyFound, tutorDtos, "");
