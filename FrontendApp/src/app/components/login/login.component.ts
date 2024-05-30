@@ -1,52 +1,39 @@
-import { AuthService } from './../../services/auth.service';
-import { Component } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { LoginEnum } from 'src/app/enums/login.enum';
 import { UserDto } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrl: './login.component.css'
 })
-
 export class LoginComponent {
-  constructor(private authService: AuthService) {}
-
   user: UserDto = new UserDto();
-
+  requestType: LoginEnum;
+  
   loginForm = new FormGroup({
     login: new FormControl(''),
     password: new FormControl(''),
   });
 
-  login(user: UserDto): void {
-    this.authService.login(this.user)
-      .subscribe((userDto) => {
-        this.user = userDto;
-        localStorage.setItem('jwtToken', this.user.jwtToken);
-        localStorage.setItem('userId', this.user.Id);
-        console.log('logged in');
-      })
-  }
-  //FIXME do i need to pass user in method?
-  //renewToken(user: UserDto): void
-  renewToken(user: UserDto): void {
-    this.authService.renewToken(this.user)
-      .subscribe((userDto) => {
-        this.user = userDto;
-        localStorage.setItem('jwtToken', this.user.jwtToken);
-        localStorage.setItem('userId', this.user.Id);
-        console.log('token renewed');
-    })
+  @Input() headerText: String;
+  @Output() RequestEmitter = new EventEmitter<{userDto: UserDto, enum: LoginEnum }>();
+  
+  emitRequest(): void{
+    this.RequestEmitter.emit({userDto: this.user, enum: this.requestType })
   }
 
-  register(user: UserDto): void {
-    this.authService.register(this.user)
-      .subscribe((userDto) => {
-        this.user = userDto;
-        localStorage.setItem('jwtToken', this.user.jwtToken);
-        localStorage.setItem('userId', this.user.Id);
-        console.log('regitered new user');
-      })
+  login(user: UserDto){
+    this.user = user;
+    this.requestType = LoginEnum.login;
+    this.emitRequest()
   }
+
+  register(user: UserDto){
+    this.user = user;
+    this.requestType = LoginEnum.register;
+    this.emitRequest()
+  }
+
 }

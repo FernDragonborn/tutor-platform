@@ -8,7 +8,7 @@ namespace TutorPlatformBackend.DTOs
         public string? Id { get; set; }
         public string TutorId { get; set; }
         public SubjectType? Type { get; set; }
-        public IList<GradeLevelObj> GradeLevels { get; set; }
+        public IList<GradeLevelsDto> GradeLevels { get; set; }
         public string? TeachingMethods { get; set; }
 
 
@@ -18,7 +18,7 @@ namespace TutorPlatformBackend.DTOs
         {
             TutorId = subject.TutorId.ToString();
             Type = subject.Type;
-            GradeLevels = subject.GradeLevels;
+            GradeLevels = subject.GradeLevels.Select(g => new GradeLevelsDto(g)).ToArray();
             TeachingMethods = subject.TeachingMethods;
         }
     }

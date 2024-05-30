@@ -8,6 +8,7 @@ using Swashbuckle.AspNetCore.Filters;
 using System.IO.Compression;
 using System.Reflection;
 using System.Text;
+using System.Text.Json.Serialization;
 using TutorPlatformBackend.Identity;
 
 namespace TutorPlatformBackend
@@ -27,6 +28,18 @@ namespace TutorPlatformBackend
             builder.Services.AddControllers();
             builder.Services.AddDbContext<TContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString(ConnectionStringName)));
+        }
+
+        internal static void AddJsonSerializerForEnums(WebApplicationBuilder builder)
+        {
+            builder.Services.AddControllers().AddJsonOptions(x =>
+            {
+                // serialize enums as strings in api responses (e.g. Role)
+                x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+
+                // ignore omitted parameters on models to enable optional params (e.g. User update)
+                x.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+            });
         }
 
         internal static void AddIfDevelopmentSuppressModelStateInvalidFilter(WebApplicationBuilder builder)

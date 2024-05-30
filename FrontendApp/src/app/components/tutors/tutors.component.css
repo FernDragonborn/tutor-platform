@@ -8,6 +8,32 @@ h2 {
 }
 
 .filter-selected{
-    padding: 10px 32px;
+    width: fit-content;
+    padding: 10px 10px;
+    border-radius: 0.5rem;
 }
 
+p{
+    margin: 0;
+}
+
+
+.filter-cross{
+    width: 0.8rem; 
+    height: 0.8rem; 
+    margin-left: 0.3rem; 
+    margin-top: 0.15rem
+}
+
+.filter-cross path {
+    fill: white;
+    transition: fill .15s ease;
+}
+
+.hover-accent:hover .filter-cross path {
+    fill: #48a391!important;
+}
+
+.hover-accent:not(:hover) .filter-cross path {
+    fill: white!important;
+}

@@ -1,0 +1,24 @@
+<div class="main w-50 bg-block text-color align-self-center mx-5 rounded-4 p-4">
+    <p class="full-name">{{user.firstName}} {{user.lastName}}</p>
+    <p class="text-decoration-underline hover-accent" (click)="toggleNameMenu()">Змінити ім'я</p>
+    @if(isChangingName){
+    <div class="input-wrapper">
+        <p>Ім'я:</p>
+        <input type="text" [(ngModel)]="user.firstName" placeholder="Введіть пізвище">
+    </div>
+    <div class="input-wrapper">
+        <p>Прізвище:</p>
+        <input type="text" [(ngModel)]="user.lastName" placeholder="Введіть ім'я">
+    </div>
+    }
+    <div class="input-wrapper">
+        <p>E-mail:</p>
+        <input type="email" [(ngModel)]="email" placeholder="Введіть email">
+    </div>
+    <p class="text-decoration-underline" (click)="togglePasswordMenu()">Змінити пароль</p>
+    @if(isChangingPassword){
+    <div class="input-wrapper">
+        <input type="text" [(ngModel)]="user.password" placeholder="Введіть новий пароль">
+    </div>
+    }
+</div>

@@ -17,12 +17,10 @@ public class Tutor : User
     [DefaultValue(IdentityData.TutorClaimName)]
     public override string Role { get; set; } = IdentityData.TutorClaimName;
 
-    [Required]
     [EmailAddress]
     [MaxLength(100)]
-    public string Email { get; set; }
+    public string? Email { get; set; }
 
-    [Required]
     [Phone]
     public string? PhoneNumber { get; set; }
 
@@ -41,12 +39,11 @@ public class Tutor : User
     public byte[]? ProfilePic { get; set; }
 
     [Required]
+    [DefaultValue(Experience.Unspecified)]
     public Experience Experience { get; set; }
 
-    [Required]
     public virtual IList<Subject> Subjects { get; set; }
 
-    [Required]
     public virtual Education Education { get; set; }
 
     public virtual IList<EducationDocument>? EducationDocuments { get; set; }
@@ -66,18 +63,18 @@ public class Tutor : User
     //[DefaultValue(false)]
     //public bool? CanTeachOnline { get; set; }
 
-    [Required]
     [MaxLength(350)]
     public string? ShortDescription { get; set; }
 
-    [Required]
     [MaxLength(1000)]
     public string? LongDescription { get; set; }
 
     [Required]
+    [DefaultValue(AgeGroup.Unspecified)]
     public AgeGroup AgeGroup { get; set; }
 
     [Required]
+    [DefaultValue(Gender.Unspecified)]
     public Gender Gender { get; set; }
 
     [Url]

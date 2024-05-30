@@ -306,7 +306,6 @@ namespace TutorPlatformBackend.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -338,7 +337,6 @@ namespace TutorPlatformBackend.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("LongDescription")
-                        .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
@@ -353,7 +351,6 @@ namespace TutorPlatformBackend.Migrations
                         .HasColumnType("nvarchar(60)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("ProfilePic")
@@ -369,7 +366,6 @@ namespace TutorPlatformBackend.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ShortDescription")
-                        .IsRequired()
                         .HasMaxLength(350)
                         .HasColumnType("nvarchar(350)");
 

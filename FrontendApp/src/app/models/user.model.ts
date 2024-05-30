@@ -1,8 +1,8 @@
 export class UserDto{
-    Id: string = '';
-    role: string = '';
-    name: string = '';
+    id: string = '';
     login: string = '';
     password: string = '';
+    firstName: string = '';
+    lastName: string = '';
     jwtToken: string = '';
 }   

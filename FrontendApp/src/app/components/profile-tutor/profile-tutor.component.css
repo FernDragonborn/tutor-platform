@@ -1,0 +1,30 @@
+
+
+.input-wrapper{
+    width: 100%;
+    display: flex;
+}
+
+.input-wrapper p{
+    width: 20%;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+p{
+    font-size: 1rem;
+    display: flex;
+    align-items: flex-end;
+    align-content: center;
+}
+
+.input-wrapper input{
+    width: 80%;
+    height: 35px;
+    background-color: #2f363c;
+    border: 1px solid black;
+    border-radius: 6px;
+    margin-bottom: 5px;
+    padding: 6px 8px;
+    transition: .1s;
+}

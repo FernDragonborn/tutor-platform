@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using TutorPlatformBackend.DbContext;
+﻿using Microsoft.AspNetCore.Mvc;
 using TutorPlatformBackend.DTOs;
 using TutorPlatformBackend.Services;
 
@@ -11,19 +9,12 @@ namespace TutorPlatformBackend.Controllers;
 [Route("api/auth")]
 public class AuthController : Controller
 {
-    private readonly TutorPlatformDbContext _context;
-
-    public AuthController(TutorPlatformDbContext context)
-    {
-        _context = context;
-    }
-
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [HttpPost("registerStudent")]
-    public async Task<IActionResult> Register(StudentDto studentDto)
+    public async Task<IActionResult> RegisterStudent([FromBody] UserDto userDto)
     {
-        var result = AuthService.Register(studentDto);
+        var result = AuthService.RegisterStudent(new StudentDto(userDto));
         if (result.IsSuccess)
         {
             return Created("api/auth", result.Data);
@@ -34,9 +25,9 @@ public class AuthController : Controller
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [HttpPost("registerTutor")]
-    public async Task<IActionResult> Register(TutorDto tutorDto)
+    public async Task<IActionResult> RegisterTutor([FromBody] UserDto userDto)
     {
-        var result = AuthService.Register(tutorDto);
+        var result = AuthService.RegisterTutor(new TutorDto(userDto));
         if (result.IsSuccess)
         {
             return Created("api/auth", result.Data);
@@ -44,19 +35,19 @@ public class AuthController : Controller
         else return BadRequest(result.Message);
     }
 
-    [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [Authorize(Policy = Identity.IdentityData.AdminPolicyName)]
-    [HttpPost("registerAdmin")]
-    public async Task<IActionResult> Register(AdminDto adminDto)
-    {
-        var result = AuthService.Register(adminDto);
-        if (result.IsSuccess)
-        {
-            return Created("api/auth", result.Data);
-        }
-        else return BadRequest(result.Message);
-    }
+    //[ProducesResponseType(StatusCodes.Status201Created)]
+    //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+    //[Authorize(Policy = Identity.IdentityData.AdminPolicyName)]
+    //[HttpPost("registerAdmin")]
+    //public async Task<IActionResult> Register([FromBody] UserDto adminDto)
+    //{
+    //    var result = AuthService.Register(adminDto);
+    //    if (result.IsSuccess)
+    //    {
+    //        return Created("api/auth", result.Data);
+    //    }
+    //    else return BadRequest(result.Message);
+    //}
 
     /// <summary>
     /// Log in and get JWT token
@@ -69,9 +60,9 @@ public class AuthController : Controller
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [HttpPost("loginStudent")]
-    public async Task<IActionResult> Login(StudentDto studentDto)
+    public async Task<IActionResult> LoginStudent([FromBody] UserDto studentDto)
     {
-        var result = AuthService.Login(studentDto);
+        var result = AuthService.LoginStudent(studentDto);
         if (result.IsSuccess)
         {
             return Ok(result.Data);
@@ -90,9 +81,9 @@ public class AuthController : Controller
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [HttpPost("loginTutor")]
-    public async Task<IActionResult> Login(TutorDto tutorDto)
+    public async Task<IActionResult> LoginTutor([FromBody] UserDto tutorDto)
     {
-        var result = AuthService.Login(tutorDto);
+        var result = AuthService.LoginTutor(tutorDto);
         if (result.IsSuccess)
         {
             return Ok(result.Data);
@@ -108,18 +99,18 @@ public class AuthController : Controller
     /// <returns>HTTP responce and JWT token in it.</returns>
     /// <response code="200">Succesfully logged in</response>
     /// <response code="400">Wrong login or password</response>
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [HttpPost("loginAdmin")]
-    public async Task<IActionResult> Login(AdminDto adminDto)
-    {
-        var result = AuthService.Login(adminDto);
-        if (result.IsSuccess)
-        {
-            return Ok(result.Data);
-        }
-        else return BadRequest(result.Message);
-    }
+    //[ProducesResponseType(StatusCodes.Status200OK)]
+    //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+    //[HttpPost("loginAdmin")]
+    //public async Task<IActionResult> Login([FromBody] UserDto adminDto)
+    //{
+    //    var result = AuthService.Login(adminDto);
+    //    if (result.IsSuccess)
+    //    {
+    //        return Ok(result.Data);
+    //    }
+    //    else return BadRequest(result.Message);
+    //}
 
     /// <summary>
     /// Method for testing if authoraization works
@@ -131,15 +122,15 @@ public class AuthController : Controller
     //[ProducesResponseType(StatusCodes.Status200OK)]
     //[Authorize]
     //[HttpPost("renewToken")]
-    //public async Task<IActionResult> RenewToken(UserDto userDto)
+    //public async Task<IActionResult> RenewToken(UserDto studentDto)
     //{
-    //    var user = await _context.Users.FirstOrDefaultAsync(x => x.Login == userDto.Login);
+    //    var user = await _context.Users.FirstOrDefaultAsync(x => x.Login == studentDto.Login);
     //    if (user is null) { return BadRequest("User not found"); }
     //    string token = JwtHandler.CreateToken(user);
-    //    userDto = new UserDto(user)
+    //    studentDto = new UserDto(user)
     //    {
     //        JwtToken = token
     //    };
-    //    return Ok(userDto);
+    //    return Ok(studentDto);
     //}
 }

@@ -20,6 +20,7 @@ public class Program
         ContextFactory.Initialize(config);
         JwtHandler.Initialize(config);
 
+
         builder.Services.AddScoped<IVirusScanner, WindowsEmbededVirusScanner>();
         builder.Services.AddScoped<IImageConverter, SimplmageConverter>();
         builder.Services.AddScoped<FilterService>();
@@ -27,6 +28,10 @@ public class Program
         AddIfDevelopmentSuppressModelStateInvalidFilter(builder);
 
         AddController<TutorPlatformDbContext>(builder, "Default");
+
+        builder.Services.AddCors();
+
+        AddJsonSerializerForEnums(builder);
 
         AddCompression(builder, CompressionLevel.Optimal);
 

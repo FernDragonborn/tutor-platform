@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './components/login/login.component';
+import { LoginStudentComponent } from './components/login-student/login-student.component';
 import { TutorsComponent } from './components/tutors/tutors.component';
-import { PriceSliderComponent } from './components/price-slider/price-slider.component';
+import { TutorCardComponent } from './components/tutor-card/tutor-card.component';
+import { LoginTutorComponent } from './components/login-tutor/login-tutor.component';
+import { ProfileTutorComponent } from './components/profile-tutor/profile-tutor.component';
 
 const routes: Routes = [
   {
@@ -15,12 +17,16 @@ const routes: Routes = [
     component: TutorsComponent
   },
   {
-    path: 'login',
-    component: LoginComponent
+    path: 'login-student',
+    component: LoginStudentComponent
   },
   {
-    path: 'slider',
-    component: PriceSliderComponent
+    path: 'login-tutor',
+    component: LoginTutorComponent
+  },
+  {
+    path: 'profile-tutor',
+    component: ProfileTutorComponent
   }
 ];
 

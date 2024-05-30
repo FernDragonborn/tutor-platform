@@ -1,4 +1,5 @@
 export enum Degree {
+    Unspecified,
     JuniorSpecialist,
     Bachelor,
     Master,

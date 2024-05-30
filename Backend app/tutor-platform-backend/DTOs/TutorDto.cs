@@ -31,6 +31,16 @@ namespace TutorPlatformBackend.DTOs
 
         public TutorDto() { }
 
+        public TutorDto(UserDto user)
+        {
+            Id = user.Id;
+            Login = user.Login;
+            Password = user.Password;
+            FirstName = user.FirstName;
+            LastName = user.LastName;
+            JwtToken = user.JwtToken;
+        }
+
         public TutorDto(Tutor tutor)
         {
             Id = tutor.Id.ToString();

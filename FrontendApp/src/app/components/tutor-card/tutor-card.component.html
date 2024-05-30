@@ -1,0 +1,23 @@
+<div class="card tutor-card mb-3 bg-block">
+    <div class="row no-gutters">
+        <div class="col-md-4">
+            <img [src]="tutor.profilePic || 'assets/default-profile.png'" class="card-img" alt="Tutor Profile Picture">
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+                <h5 class="card-title">
+                    {{ tutor.firstName }} {{ tutor.lastName }}
+                    <span *ngIf="tutor.isVerified" class="badge badge-success ml-2">Verified</span>
+                </h5>
+                <p class="card-text"><strong>Experience:</strong> {{ tutor.experience | experiencePipe }}</p>
+                <p class="card-text"><strong>Subjects:</strong>
+                    <span *ngFor="let subject of tutor.subjects; let last = last">
+                        {{ subject.subjectName }}<span *ngIf="!last">, </span>
+                    </span>
+                </p>
+                <p class="card-text">{{ tutor.shortDescription }}</p>
+                <p class="card-text"><strong>Price per lesson:</strong> ₴{{ tutor.priceToShow }}</p>
+            </div>
+        </div>
+    </div>
+</div>
