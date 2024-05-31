@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { SubjectType, SubjectNamesUa } from '../../enums/subject-type.enum';
-import { GradeLevel, GradeNamesUa } from 'src/app/enums/grade-level.enum';
+import { SubjectType } from '../../enums/subject-type.enum';
+import { GradeLevel } from 'src/app/enums/grade-level.enum';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TutorService } from 'src/app/services/tutor.service';
 import { TutorDto } from 'src/app/models/tutor.model';
@@ -37,7 +37,7 @@ export class TutorsComponent {
     isProfileActive: true,
     experience: Experience.FivePlus,
     subjects: [
-      { subjectName: 'Mathematics', price: 200,  gradeLevels: new Array<GradeLevelsDto>, description: 'Algebra and Calculus' }
+      { subjectType: SubjectType.Maths, price: 200,  gradeLevels: new Array<GradeLevelsDto>, description: 'Algebra and Calculus' }
     ],
     educations: [
       { universityName: 'University of Example', degree: Degree.Bachelor, graduationYear: 2010 }
@@ -50,7 +50,9 @@ export class TutorsComponent {
     gender: Gender.Male,
     youtubeVideoLink: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
     schedule: [],
-    reviews: []
+    reviews: [],
+    login: null,
+    password: null
   };
 
 
@@ -125,14 +127,6 @@ export class TutorsComponent {
       queryParams: { ['grade']: null},
       queryParamsHandling: 'merge'
     })
-  }
-
-  getSubjectName(subject: SubjectType): string {
-    return SubjectNamesUa[subject];
-  }
-
-  getGradeName(grade: GradeLevel): string {
-    return GradeNamesUa[grade];
   }
 
   generateId(item: string): string {

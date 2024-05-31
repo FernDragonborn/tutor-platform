@@ -12,7 +12,7 @@
                 <p class="card-text"><strong>Experience:</strong> {{ tutor.experience | experiencePipe }}</p>
                 <p class="card-text"><strong>Subjects:</strong>
                     <span *ngFor="let subject of tutor.subjects; let last = last">
-                        {{ subject.subjectName }}<span *ngIf="!last">, </span>
+                        {{ subject.subjectType | subjectToUa }}<span *ngIf="!last">, </span>
                     </span>
                 </p>
                 <p class="card-text">{{ tutor.shortDescription }}</p>

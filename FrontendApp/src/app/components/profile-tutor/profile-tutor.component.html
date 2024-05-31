@@ -1,24 +1,83 @@
 <div class="main w-50 bg-block text-color align-self-center mx-5 rounded-4 p-4">
-    <p class="full-name">{{user.firstName}} {{user.lastName}}</p>
+    <p class="full-name">{{tutor.firstName}} {{tutor.lastName}}</p>
     <p class="text-decoration-underline hover-accent" (click)="toggleNameMenu()">Змінити ім'я</p>
-    @if(isChangingName){
-    <div class="input-wrapper">
+
+    <div class="input-wrapper" [hidden]="isChangingName">
         <p>Ім'я:</p>
-        <input type="text" [(ngModel)]="user.firstName" placeholder="Введіть пізвище">
+        <input type="text" [(ngModel)]="tutor.firstName" (keyup.enter)="onEnter()" placeholder="Введіть ім'я">
     </div>
-    <div class="input-wrapper">
+    <div class="input-wrapper" [hidden]="isChangingName">
         <p>Прізвище:</p>
-        <input type="text" [(ngModel)]="user.lastName" placeholder="Введіть ім'я">
+        <input type="text" [(ngModel)]="tutor.lastName" (keyup.enter)="onEnter()" placeholder="Введіть прізвище">
     </div>
-    }
+
     <div class="input-wrapper">
         <p>E-mail:</p>
-        <input type="email" [(ngModel)]="email" placeholder="Введіть email">
+        <input type="email" [(ngModel)]="email" (keyup.enter)="onEnter()" placeholder="Введіть email">
     </div>
-    <p class="text-decoration-underline" (click)="togglePasswordMenu()">Змінити пароль</p>
-    @if(isChangingPassword){
     <div class="input-wrapper">
-        <input type="text" [(ngModel)]="user.password" placeholder="Введіть новий пароль">
+        <p>Телефон:</p>
+        <input type="text" [(ngModel)]="tutor.phoneNumber" (keyup.enter)="onEnter()" placeholder="Введіть телефон">
     </div>
-    }
+    <p class="text-decoration-underline hover-accent" (click)="togglePasswordMenu()">Змінити пароль</p>
+
+    <div id="password-input-wrap" [hidden]="isChangingPassword">
+        <div class="input-wrapper">
+            <input type="text" [(ngModel)]="tutor.password" (keyup.enter)="onEnter()"
+                placeholder="Введіть новий пароль">
+        </div>
+        <button class="btn btn-dark" (click)="changePassword()">Оновити пароль</button>
+    </div>
+
+    <div class="input-wrapper">
+        <p>Досвід:</p>
+        <select class="form-select bg-block text-white border border-black" [(ngModel)]="tutor.experience">
+            <option *ngFor="let experience of experiences" [value]="experience">{{ experience }}
+            </option>
+        </select>
+    </div>
+
+    <div class="input-wrapper">
+        <p>Ставка:</p>
+        <select class="form-select bg-block text-white border border-black" [(ngModel)]="tutor.priceToShow">
+            <option *ngFor="let price of prices" [value]="price">{{ price }}₴ </option>
+        </select>
+    </div>
+
+    <div id="subjects-wrapper">
+        <p>Предмети: </p>
+        <p class="text-decoration-underline hover-accent" [hidden]="isAddingSubject" (click)="onAddingSubject()">
+            Додати предмет
+        </p>
+        <select class="form-select bg-block text-white border border-black" [(ngModel)]="subjectToAdd"
+            [hidden]="!isAddingSubject">
+            <option *ngFor="let subject of subjects" [value]="subject" (click)="addToSubjects(subject)">
+                {{ subject | subjectToUa }}
+            </option>
+        </select>
+        @if(subjectToAdd){
+        <div class="grade-selector">
+            <div class="dropdown border border-black rounded-4">
+                <button class="dropdown-button" (click)="toggleDropdown()">Обрати класи</button>
+                <div class="dropdown-content" [hidden]="!isDropdownVisible">
+                    <div *ngFor="let grade of gradeLevels" (click)="addGrade(grade)">
+                        {{ grade | gradeToUa }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="selected-grades">
+                <div *ngFor="let grade of selectedGrades" class="grade-chip" (click)="removeGrade(grade)">
+                    {{ grade | gradeToUa }}
+                    <span class="remove-button">✖</span>
+                </div>
+            </div>
+        </div>
+        <div class="bg-block w-100 py-1 px-4 rounded-4 border border-black" style="min-height: 6rem;"
+            contenteditable="true" [(ngModel)]="subjectToAdd.description"
+            placeholder="Опишіть ваші методики та переваги викладання даного предмету">
+        </div>
+        }
+    </div>
+
 </div>

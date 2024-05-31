@@ -10,6 +10,8 @@ export class TutorDto {
     firstName: string;
     lastName: string;
     email: string;
+    login: string | null;
+    password: string | null;
     phoneNumber: string;
     viber: string;
     telegram: string;
@@ -47,7 +49,9 @@ export class TutorDto {
         gender: Gender | null = null,
         youtubeVideoLink: string = "",
         schedule: boolean[][] = [],
-        reviews: ReviewDto[] = []
+        reviews: ReviewDto[] = [],
+        password: string | null = null,
+        login: string | null = null,
     ) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -68,5 +72,7 @@ export class TutorDto {
         this.youtubeVideoLink = youtubeVideoLink;
         this.schedule = schedule;
         this.reviews = reviews;
+        this.login = login;
+        this.password = password;
     }
 }

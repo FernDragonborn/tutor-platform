@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { Experience } from '../enums/experience.enum'; 
 
 @Pipe({ name: 'experiencePipe' })
-export class ExperiencePipe implements PipeTransform {
+export class ExperiencePipeToUa implements PipeTransform {
   transform(value: Experience | null): string {
     if (value === null) return 'N/A';
     switch (value) {

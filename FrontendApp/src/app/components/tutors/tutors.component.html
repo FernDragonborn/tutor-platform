@@ -3,7 +3,7 @@
         <div>
             @if (selectedSubject) {
             <div class="filter-selected hover-accent border border-dark mb-2" (click)="removeSubjectFilter()">
-                <p>{{ getSubjectName(selectedSubject)}}
+                <p>{{ selectedSubject | subjectToUa }}
                     <svg class="filter-cross" version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
                         viewBox="0 0 59 59" xml:space="preserve">
                         <path d="M28.228,23.986L47.092,5.122c1.172-1.171,1.172-3.071,0-4.242c-1.172-1.172-3.07-1.172-4.242,0L23.986,19.744L5.121,0.88
@@ -16,7 +16,7 @@
             }
             @if(selectedGrade) {
             <p class="filter-selected hover-accent border border-dark mb-2" (click)="removeGradeFilter()"> {{
-                getGradeName(selectedGrade) }}
+                selectedGrade | gradeToUa }}
                 <svg class="filter-cross" version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
                     viewBox="0 0 59 59" xml:space="preserve">
                     <path d="M28.228,23.986L47.092,5.122c1.172-1.171,1.172-3.071,0-4.242c-1.172-1.172-3.07-1.172-4.242,0L23.986,19.744L5.121,0.88
@@ -34,7 +34,7 @@
                     [attr.id]="generateId(subject)">
                     <a [routerLink]="[]" [queryParams]="{ subject: subject }" queryParamsHandling="merge"
                         (click)="onSubjectSelected(subject)">
-                        {{ getSubjectName(subject) }}
+                        {{ subject | subjectToUa }}
                     </a>
                 </li>
             </ul>
@@ -46,7 +46,7 @@
                     [attr.id]="generateId(grade)">
                     <a [routerLink]="[]" [queryParams]="{ grade: grade }" queryParamsHandling="merge"
                         (click)="onGradeSelected(grade)">
-                        {{ getGradeName(grade) }}
+                        {{ grade | gradeToUa }}
                     </a>
                 </li>
             </ul>

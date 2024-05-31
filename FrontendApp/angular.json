@@ -25,8 +25,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css",
-              "@angular/material/prebuilt-themes/pink-bluegrey.css"
+              "@angular/material/prebuilt-themes/indigo-pink.css",
+              "src/styles.css"
             ],
             "scripts": []
           },
@@ -88,8 +88,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css",
-              "@angular/material/prebuilt-themes/pink-bluegrey.css"
+              "@angular/material/prebuilt-themes/indigo-pink.css",
+              "src/styles.css"
             ],
             "scripts": []
           }
@@ -99,7 +99,8 @@
   },
   "schematics": {
     "@schematics/angular:component": {
-      "style": "css"
+      "style": "css",
+      "standalone": false
     }
   },
   "cli": {

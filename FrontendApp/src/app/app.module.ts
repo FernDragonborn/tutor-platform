@@ -22,12 +22,17 @@ import { TutorsComponent } from './components/tutors/tutors.component';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { PriceSliderComponent } from './components/price-slider/price-slider.component';
 import { TutorCardComponent } from './components/tutor-card/tutor-card.component';
-import { GenderPipe } from './pipes/gender.pipe';
-import { ExperiencePipe } from './pipes/experience.pipe';
+import { GenderPipeToUa } from './pipes/gender.pipe';
+import { ExperiencePipeToUa } from './pipes/experience.pipe';
 import { HeaderComponent } from './components/header/header.component';
 import { LoginTutorComponent } from './components/login-tutor/login-tutor.component';
 import { LoginComponent } from './components/login/login.component';
 import { ProfileTutorComponent } from './components/profile-tutor/profile-tutor.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatSelectModule } from '@angular/material/select';
+import { SubjectToUaPipe } from './pipes/subject-to-ua.pipe';
+import { UaToSubjectPipe } from './pipes/ua-to-subject.pipe';
+import { GradeToUaPipe } from './pipes/grade-to-ua.pipe';
 
 
 @NgModule({
@@ -43,9 +48,12 @@ import { ProfileTutorComponent } from './components/profile-tutor/profile-tutor.
     PriceSliderComponent,
     TutorCardComponent,
     ProfileTutorComponent,
-    ExperiencePipe,
-    GenderPipe,
-    HeaderComponent
+    ExperiencePipeToUa,
+    GenderPipeToUa,
+    HeaderComponent,
+    SubjectToUaPipe, 
+    UaToSubjectPipe,
+    GradeToUaPipe
   ],
   imports: [
     RouterModule,
@@ -59,8 +67,12 @@ import { ProfileTutorComponent } from './components/profile-tutor/profile-tutor.
     MatIconModule,
     MatButtonModule,
     MatInputModule,
-    NgxSliderModule
+    NgxSliderModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatChipsModule
   ],
+  exports: [SubjectToUaPipe, UaToSubjectPipe, GenderPipeToUa, ExperiencePipeToUa, GradeToUaPipe],
   providers: [AuthService,
   {
     provide: HTTP_INTERCEPTORS,
